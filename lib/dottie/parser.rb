@@ -2,7 +2,6 @@ module Dottie::Parser
   class << self
     def parse(file)
       sections = {}
-
       section = nil
 
       file.each_line do |line|
