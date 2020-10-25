@@ -1,5 +1,5 @@
 module Dottie
-  class Parser
+  module Parser
     def self.parse(path)
       sections = {}
 
