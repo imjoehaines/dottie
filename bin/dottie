@@ -7,6 +7,8 @@ require_relative "../lib/dottie/runner"
 require_relative "../lib/dottie/test_case"
 require_relative "../lib/dottie/type"
 
+def colour(*args); Dottie::Colour.new(*args) end
+
 puts "✨ Dottie #{Dottie::VERSION} :)\n\n"
 
 exit_code = 0
@@ -22,15 +24,15 @@ test_files.each do |path|
   result = test_case.run(runner)
 
   if result.success?
-    puts "#{Dottie::Colour.new("✔").green} #{test_case.test}"
+    puts "#{colour("✔").green} #{test_case.test}"
   elsif result.skipped?
-    puts "#{Dottie::Colour.new("-").cyan} #{test_case.test}"
+    puts "#{colour("-").cyan} #{test_case.test}"
   else
     puts <<~TEXT
-      #{Dottie::Colour.new("✖").red} #{test_case.test}
-      #{Dottie::Colour.new("Expected output:").bold}
+      #{colour("✖").red} #{test_case.test}
+      #{colour("Expected output:").bold}
       #{test_case.expect}
-      #{Dottie::Colour.new("Actual output:").bold}
+      #{colour("Actual output:").bold}
       #{test_case.result}
     TEXT
 
@@ -45,15 +47,15 @@ failures = results.count(&:failed?)
 plural = ->(count) { count == 1 ? "test" : "tests" }
 
 puts "\n"
-puts Dottie::Colour.new("Ran #{results.count} #{plural.(results.count)}!").bold
-puts Dottie::Colour.new("#{skips} skipped #{plural.(skips)}").cyan if skips > 0
-puts Dottie::Colour.new("#{failures} failed #{plural.(failures)}").red if failures > 0
+puts colour("Ran #{results.count} #{plural.(results.count)}!").bold
+puts colour("#{skips} skipped #{plural.(skips)}").cyan if skips > 0
+puts colour("#{failures} failed #{plural.(failures)}").red if failures > 0
 puts "\n"
 
 if failures == 0
-  puts Dottie::Colour.new("SUCCESS").green.bold
+  puts colour("SUCCESS").green.bold
 else
-  puts Dottie::Colour.new("FAIL").red.bold
+  puts colour("FAIL").red.bold
 end
 
 exit exit_code
