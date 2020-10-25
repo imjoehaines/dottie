@@ -4,25 +4,12 @@ module Dottie
       @string = string
     end
 
-    def bold
-      colour(1)
-    end
+    def bold; colour(1) end
+    def red; colour(31) end
+    def green; colour(32) end
+    def cyan; colour(36) end
 
-    def red
-      colour(31)
-    end
-
-    def green
-      colour(32)
-    end
-
-    def cyan
-      colour(36)
-    end
-
-    def to_s
-      @string
-    end
+    def to_s; @string end
 
     private
 
