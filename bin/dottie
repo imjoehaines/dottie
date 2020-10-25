@@ -17,8 +17,8 @@ test_files.each do |path|
   sections = Dottie::Parser.parse(path)
   type = Dottie::Type.for(File.extname(path))
 
-  test_case = Dottie::TestCase.new(type, runner, **sections)
-  result = test_case.run
+  test_case = Dottie::TestCase.new(type, **sections)
+  result = test_case.run(runner)
 
   if result.success?
     puts "#{Dottie::Colour.new("✔").green} #{test_case.test}"
