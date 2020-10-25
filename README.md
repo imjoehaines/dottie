@@ -1,4 +1,4 @@
-# dottie
+# Dottie
 
 Dottie is a test runner for PHPT-like tests that currently supports PHP and Ruby
 
