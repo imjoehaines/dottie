@@ -1,0 +1,26 @@
+--TEST--
+Test simple JSON encoding
+--FILE--
+require "json"
+
+puts JSON::pretty_generate(
+  {
+    a: "b",
+    c: [1, 2, 3],
+    d: {
+      e: "f"
+    }
+  }
+)
+--EXPECT--
+{
+  "a": "b",
+  "c": [
+    1,
+    2,
+    3
+  ],
+  "d": {
+    "e": "f"
+  }
+}
