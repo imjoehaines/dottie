@@ -86,14 +86,16 @@ puts "Hello, World!"
 Hello, World!
 ```
 
+This **must exactly match** the combined output of stdout & stderr. If you need to test something that cannot be exactly matched (such as the current time), use `EXPECTF` or `EXPECTREGEX` instead
+
 ## Currently implemented test sections
 
 - [x] TEST
 - [x] FILE
 - [x] EXPECT
-- [ ] EXPECTF
-- [ ] EXPECTREGEX
-- [ ] SKIPIF
+- [ ] EXPECTF (EXPECT_FORMAT?)
+- [ ] EXPECTREGEX (EXPECT_REGEX?)
+- [ ] SKIPIF (SKIP_IF?)
 - [ ] ENV
 - [ ] ARGS
 - [ ] XFAIL
