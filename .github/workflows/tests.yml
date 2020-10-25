@@ -3,7 +3,7 @@ name: Tests
 on: [push]
 
 jobs:
-  unit-tests:
+  dot-t-tests:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
