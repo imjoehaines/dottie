@@ -1,5 +1,3 @@
-require "open3"
-
 module Dottie::Type
   class Ruby
     def command
