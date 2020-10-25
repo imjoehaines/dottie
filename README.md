@@ -96,7 +96,7 @@ This **must exactly match** the combined output of stdout & stderr. If you need 
 - [ ] EXPECTF (EXPECT_FORMAT?)
 - [ ] EXPECTREGEX (EXPECT_REGEX?)
 - [x] SKIPIF (SKIP_IF?)
-- [ ] ENV
+- [x] ENV
 - [ ] ARGS
 - [ ] XFAIL
 - [ ] CLEAN

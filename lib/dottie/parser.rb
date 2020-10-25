@@ -25,7 +25,22 @@ module Dottie::Parser
         end
       end
 
+      sections[:env] = parse_env(sections[:env]) if sections.has_key?(:env)
+
       sections
+    end
+
+    private
+
+    def parse_env(env_string)
+      env = {}
+
+      env_string.each_line do |line|
+        key, value = line.split("=")
+        env[key] = value.chomp
+      end
+
+      env
     end
   end
 end
