@@ -2,8 +2,9 @@
 
 require_relative "../lib/dottie"
 require_relative "../lib/dottie/colour"
-require_relative "../lib/dottie/test_case"
+require_relative "../lib/dottie/parser"
 require_relative "../lib/dottie/runner"
+require_relative "../lib/dottie/test_case"
 require_relative "../lib/dottie/type"
 
 puts "✨ Dottie #{Dottie::VERSION} :)\n\n"
@@ -13,31 +14,8 @@ test_files = Dir["tests/*.*t"]
 runner = Dottie::Runner.new
 
 test_files.each do |path|
-  sections = {}
-
+  sections = Dottie::Parser.parse(path)
   type = Dottie::Type::for(File.extname(path))
-
-  File.open(path) do |file|
-    section = nil
-
-    file.each_line do |line|
-      matches = /^--([A-Z]+)--$/.match(line)
-
-      if matches
-        section = matches[1].downcase.to_sym
-
-        raise "Duplicate '--#{matches[1]}--' section found" if sections.has_key?(section)
-
-        sections[section] = ""
-
-        next
-      end
-
-      raise "Must begin a test file with --TEST--" unless section
-
-      sections[section] += line
-    end
-  end
 
   test_case = Dottie::TestCase.new(type, runner, **sections)
   success = test_case.run
