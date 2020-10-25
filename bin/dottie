@@ -2,6 +2,7 @@
 
 require_relative "../lib/dottie"
 require_relative "../lib/dottie/test_case"
+require_relative "../lib/dottie/runner"
 require_relative "../lib/dottie/type/php"
 require_relative "../lib/dottie/type/ruby"
 
@@ -9,6 +10,7 @@ puts "Dottie #{Dottie::VERSION} :)\n"
 
 exit_code = 0
 test_files = Dir["tests/*.*t"]
+runner = Dottie::Runner.new
 
 test_files.each do |path|
   sections = {}
@@ -42,7 +44,7 @@ test_files.each do |path|
     end
   end
 
-  test_case = Dottie::TestCase.new(type, **sections)
+  test_case = Dottie::TestCase.new(type, runner, **sections)
   success = test_case.run
 
   exit_code = 1 unless success
