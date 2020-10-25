@@ -1,28 +1,26 @@
 module Dottie::Parser
   class << self
-    def parse(path)
+    def parse(file)
       sections = {}
 
-      File.open(path) do |file|
-        section = nil
+      section = nil
 
-        file.each_line do |line|
-          matches = /^--([A-Z]+)--$/.match(line)
+      file.each_line do |line|
+        matches = /^--([A-Z]+)--$/.match(line)
 
-          if matches
-            section = matches[1].downcase.to_sym
+        if matches
+          section = matches[1].downcase.to_sym
 
-            raise "Duplicate '--#{matches[1]}--' section found" if sections.has_key?(section)
+          raise "Duplicate '--#{matches[1]}--' section found" if sections.has_key?(section)
 
-            sections[section] = ""
+          sections[section] = ""
 
-            next
-          end
-
-          raise "Must begin a test file with --TEST--" unless section
-
-          sections[section] += line
+          next
         end
+
+        raise "Must begin a test file with --TEST--" unless section
+
+        sections[section] += line
       end
 
       sections[:env] = parse_env(sections[:env]) if sections.has_key?(:env)

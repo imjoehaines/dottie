@@ -24,7 +24,7 @@ if test_files.empty?
 end
 
 test_files.each do |path|
-  sections = Dottie::Parser.parse(path)
+  sections = File.open(path) { |file| Dottie::Parser.parse(file) }
   type = Dottie::Type.for(File.extname(path))
 
   test_case = Dottie::TestCase.new(type, **sections)
