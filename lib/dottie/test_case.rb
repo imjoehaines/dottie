@@ -1,7 +1,6 @@
 module Dottie
   class TestCase
     attr_reader :test
-    attr_reader :file
     attr_reader :expect
     attr_reader :result
 
