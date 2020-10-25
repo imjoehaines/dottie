@@ -11,7 +11,7 @@ module Dottie
         <<~TEXT
           #{colour("✖").red} #{test_case.test}
           #{colour("Expected output:").bold}
-          #{test_case.expect}
+          #{test_case.expected}
           #{colour("Actual output:").bold}
           #{test_case.result}
         TEXT

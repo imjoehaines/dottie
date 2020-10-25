@@ -1,0 +1,26 @@
+--TEST--
+Test EXPECTF works with a simple case
+--FILE--
+require "securerandom"
+
+puts "cool name: abc xyz"
+puts "coolness percent: #{rand(1..100)}%"
+puts "maybe a name: #{rand > 0.5 ? "anita" : ""}"
+puts "cool name multi-line: abc\nxyz"
+puts "maybe a multi-line name: #{rand > 0.5 ? "anita\nt\nw\no\n" : ""}"
+puts "floats are cool: #{rand}"
+puts "azbxcy"
+puts "10 +20 -30 40"
+puts "** a   b \n c \t d **"
+puts "UUID: #{SecureRandom.uuid.gsub("-", "")}"
+--EXPECTF--
+cool name: %s
+coolness percent: %d%%
+maybe a name: %S
+cool name multi-line: %a
+maybe a multi-line name: %A
+floats are cool: %f
+a%cb%cc%c
+%d %i %i %d
+** %c %w %c %w %c %w %c **
+UUID: %x
