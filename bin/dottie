@@ -14,7 +14,14 @@ formatter = Dottie::Formatter.new
 
 results = []
 exit_code = 0
-test_files = Dir["tests/*.*t"]
+directory = ARGV.fetch(0, "tests")
+test_files = Dir["#{directory}/*.*t"]
+
+if test_files.empty?
+  puts formatter.no_tests_found("#{__dir__}/#{directory}")
+
+  exit 1
+end
 
 test_files.each do |path|
   sections = Dottie::Parser.parse(path)

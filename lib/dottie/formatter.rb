@@ -34,16 +34,27 @@ module Dottie
         output << colour("#{failures} failed #{plural.(failures)}").red.to_s << "\n"
       end
 
-      output << "\n"
+      output << "\n" << success_or_fail(success: failures == 0)
 
-      if failures == 0
-        output << colour("SUCCESS").green.bold.to_s
-      else
-        output << colour("FAIL").red.bold.to_s
-      end
+      output
+    end
+
+    def no_tests_found(directory)
+      output = "No tests found in '#{directory}'\n\n"
+      output << success_or_fail(success: false)
+
+      output
     end
 
     private
+
+    def success_or_fail(success:)
+      if success
+        colour("SUCCESS").green.bold.to_s
+      else
+        colour("FAIL").red.bold.to_s
+      end
+    end
 
     def colour(*args); Dottie::Colour.new(*args) end
   end
