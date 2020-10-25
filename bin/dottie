@@ -2,19 +2,20 @@
 
 require_relative "../lib/dottie"
 require_relative "../lib/dottie/colour"
+require_relative "../lib/dottie/formatter"
 require_relative "../lib/dottie/parser"
 require_relative "../lib/dottie/runner"
 require_relative "../lib/dottie/test_case"
 require_relative "../lib/dottie/type"
 
-def colour(*args); Dottie::Colour.new(*args) end
-
 puts "✨ Dottie #{Dottie::VERSION} :)\n\n"
 
+runner = Dottie::Runner.new
+formatter = Dottie::Formatter.new
+
+results = []
 exit_code = 0
 test_files = Dir["tests/*.*t"]
-runner = Dottie::Runner.new
-results = []
 
 test_files.each do |path|
   sections = Dottie::Parser.parse(path)
@@ -23,39 +24,13 @@ test_files.each do |path|
   test_case = Dottie::TestCase.new(type, **sections)
   result = test_case.run(runner)
 
-  if result.success?
-    puts "#{colour("✔").green} #{test_case.test}"
-  elsif result.skipped?
-    puts "#{colour("-").cyan} #{test_case.test}"
-  else
-    puts <<~TEXT
-      #{colour("✖").red} #{test_case.test}
-      #{colour("Expected output:").bold}
-      #{test_case.expect}
-      #{colour("Actual output:").bold}
-      #{test_case.result}
-    TEXT
+  puts formatter.test_result(test_case, result)
 
-    exit_code = 1
-  end
+  exit_code = 1 if result.failed?
 
   results << result
 end
 
-skips = results.count(&:skipped?)
-failures = results.count(&:failed?)
-plural = ->(count) { count == 1 ? "test" : "tests" }
-
-puts "\n"
-puts colour("Ran #{results.count} #{plural.(results.count)}!").bold
-puts colour("#{skips} skipped #{plural.(skips)}").cyan if skips > 0
-puts colour("#{failures} failed #{plural.(failures)}").red if failures > 0
-puts "\n"
-
-if failures == 0
-  puts colour("SUCCESS").green.bold
-else
-  puts colour("FAIL").red.bold
-end
+puts formatter.suite_result(results)
 
 exit exit_code
