@@ -12,6 +12,7 @@ puts "✨ Dottie #{Dottie::VERSION} :)\n\n"
 exit_code = 0
 test_files = Dir["tests/*.*t"]
 runner = Dottie::Runner.new
+results = []
 
 test_files.each do |path|
   sections = Dottie::Parser.parse(path)
@@ -35,6 +36,24 @@ test_files.each do |path|
 
     exit_code = 1
   end
+
+  results << result
+end
+
+skips = results.count(&:skipped?)
+failures = results.count(&:failed?)
+plural = ->(count) { count == 1 ? "test" : "tests" }
+
+puts "\n"
+puts Dottie::Colour.new("Ran #{results.count} #{plural.(results.count)}!").bold
+puts Dottie::Colour.new("#{skips} skipped #{plural.(skips)}").cyan if skips > 0
+puts Dottie::Colour.new("#{failures} failed #{plural.(failures)}").red if failures > 0
+puts "\n"
+
+if failures == 0
+  puts Dottie::Colour.new("SUCCESS").green.bold
+else
+  puts Dottie::Colour.new("FAIL").red.bold
 end
 
 exit exit_code

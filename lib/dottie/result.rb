@@ -12,5 +12,9 @@ module Dottie
     def skipped?
       @skipped
     end
+
+    def failed?
+      !success? && !skipped?
+    end
   end
 end
