@@ -1,0 +1,8 @@
+--TEST--
+Test 'puts'
+--FILE--
+puts "Hello"
+puts "World!"
+--EXPECT--
+Hello
+World!

@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+require_relative "../lib/dottie"
+require_relative "../lib/dottie/test_case"
+
+puts "Dottie #{Dottie::VERSION} :)\n"
+
+exit_code = 0
+test_files = Dir["tests/*.*t"]
+
+test_files.each do |path|
+  sections = {}
+  extension = File.extname(path)
+
+  type = case extension
+    when ".phpt" then :php
+    when ".rubyt" then :ruby
+    else raise "Unknown file type for '#{extension}'!"
+  end
+
+  File.open(path) do |file|
+    section = nil
+
+    file.each_line do |line|
+      matches = /^--([A-Z]+)--$/.match(line)
+
+      if matches
+        section = matches[1].downcase.to_sym
+
+        raise "Duplicate '--#{matches[1]}--' section found" if sections.has_key?(section)
+
+        sections[section] = ""
+
+        next
+      end
+
+      raise "Must begin a test file with --TEST--" unless section
+
+      sections[section] += line
+    end
+  end
+
+  test_case = Dottie::TestCase.new(type.to_s, **sections)
+  success = test_case.run
+
+  exit_code = 1 unless success
+
+  puts "#{success ? "o" : "X"} #{test_case.test}"
+
+  unless success
+    puts <<-TEXT
+  Expected output:
+#{test_case.expect}
+  Actual output:
+#{test_case.result}
+TEXT
+  end
+end
+
+exit exit_code
