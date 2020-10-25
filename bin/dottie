@@ -20,21 +20,18 @@ test_files.each do |path|
   test_case = Dottie::TestCase.new(type, runner, **sections)
   success = test_case.run
 
-  exit_code = 1 unless success
-
   if success
     puts "#{Dottie::Colour.new("✔").green} #{test_case.test}"
   else
-    puts "#{Dottie::Colour.new("✖").red} #{test_case.test}"
-  end
+    puts <<~TEXT
+      #{Dottie::Colour.new("✖").red} #{test_case.test}
+      #{Dottie::Colour.new("Expected output:").bold}
+      #{test_case.expect}
+      #{Dottie::Colour.new("Actual output:").bold}
+      #{test_case.result}
+    TEXT
 
-  unless success
-    puts <<-TEXT
-  #{Dottie::Colour.new("Expected output:").bold}
-#{test_case.expect}
-  #{Dottie::Colour.new("Actual output:").bold}
-#{test_case.result}
-TEXT
+    exit_code = 1
   end
 end
 
