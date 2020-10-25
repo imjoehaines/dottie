@@ -27,11 +27,5 @@ module Dottie::Parser
 
       sections
     end
-
-    private
-
-    def validate(sections)
-      raise "oh no #{sections}"
-    end
   end
 end
