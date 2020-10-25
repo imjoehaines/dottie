@@ -1,9 +1,9 @@
 --TEST--
-Test $_ENV is populated by the '--ENV--' section
+Test getenv can fetch values from the '--ENV--' section
 --FILE--
 <?php
-echo $_ENV['ABC'], "\n";
-echo "hello ", $_ENV["HELLO"], "\n";
+echo getenv("ABC"), "\n";
+echo "hello ", getenv("HELLO"), "\n";
 ?>
 --ENV--
 ABC=123

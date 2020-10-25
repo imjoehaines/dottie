@@ -1,7 +1,7 @@
 module Dottie::Type
   class Php
     def command
-      "php -n"
+      "php"
     end
   end
 end
