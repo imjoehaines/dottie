@@ -35,9 +35,9 @@ module Dottie
 
     def expected
       case
-        when @expect then @expect
-        when @expectf then @expectf
-        else raise "Invalid test case; no expect/expectf given!"
+      when @expect then @expect
+      when @expectf then @expectf
+      else raise "Invalid test case; no expect/expectf given!"
       end
     end
 
@@ -45,9 +45,9 @@ module Dottie
 
     def success?
       case
-        when @expect then @expect == @result
-        when @expectf then expectf_matches?
-        else false
+      when @expect then @expect == @result
+      when @expectf then expectf_matches?
+      else false
       end
     end
 

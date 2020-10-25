@@ -5,9 +5,9 @@ module Dottie::Type
   class << self
     def for(extension)
       case extension
-        when ".phpt" then php_type
-        when ".rubyt" then ruby_type
-        else raise "Unknown file type '#{extension}'!"
+      when ".phpt" then php_type
+      when ".rubyt" then ruby_type
+      else raise "Unknown file type '#{extension}'!"
       end
     end
 
