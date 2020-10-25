@@ -40,10 +40,11 @@ module Dottie
     end
 
     def no_tests_found(directory)
-      output = "No tests found in '#{directory}'\n\n"
-      output << success_or_fail(success: false)
+      <<~TEXT
+        No tests found in '#{directory}'
 
-      output
+        #{success_or_fail(success: false)}
+      TEXT
     end
 
     private
