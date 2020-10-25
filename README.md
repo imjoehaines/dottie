@@ -100,7 +100,6 @@ This **must exactly match** the combined output of stdout & stderr. If you need 
 - [ ] ARGS
 - [ ] XFAIL
 - [ ] CLEAN
-- [ ] CAPTURE_STDIO
 - [ ] DESCRIPTION
 
 Additional sections do exist in the PHPT format ([see the PHP QA reference](https://qa.php.net/phpt_details.php)) but are not planned to be supported by Dottie as they are somewhat PHP specific
