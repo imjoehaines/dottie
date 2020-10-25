@@ -13,9 +13,8 @@ runner = Dottie::Runner.new
 
 test_files.each do |path|
   sections = {}
-  extension = File.extname(path)
 
-  type = Dottie::Type::for(extension)
+  type = Dottie::Type::for(File.extname(path))
 
   File.open(path) do |file|
     section = nil
