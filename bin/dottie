@@ -14,8 +14,8 @@ test_files = Dir["tests/*.*t"]
 runner = Dottie::Runner.new
 
 test_files.each do |path|
-  sections = Dottie::Parser::parse(path)
-  type = Dottie::Type::for(File.extname(path))
+  sections = Dottie::Parser.parse(path)
+  type = Dottie::Type.for(File.extname(path))
 
   test_case = Dottie::TestCase.new(type, runner, **sections)
   success = test_case.run

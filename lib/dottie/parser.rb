@@ -1,6 +1,6 @@
-module Dottie
-  module Parser
-    def self.parse(path)
+module Dottie::Parser
+  class << self
+    def parse(path)
       sections = {}
 
       File.open(path) do |file|
@@ -26,6 +26,12 @@ module Dottie
       end
 
       sections
+    end
+
+    private
+
+    def validate(sections)
+      raise "oh no #{sections}"
     end
   end
 end
