@@ -12,7 +12,7 @@ puts "floats are cool: #{rand}"
 puts "azbxcy"
 puts "10 +20 -30 40"
 puts "** a   b \n c \t d **"
-puts "UUID: #{SecureRandom.uuid.gsub("-", "")}"
+puts "UUID: #{SecureRandom.uuid}"
 --EXPECTF--
 cool name: %s
 coolness percent: %d%%
@@ -23,4 +23,4 @@ floats are cool: %f
 a%cb%cc%c
 %d %i %i %d
 ** %c %w %c %w %c %w %c **
-UUID: %x
+UUID: %x-%x-%x-%x-%x
