@@ -16,6 +16,10 @@ module Dottie
       colour(32)
     end
 
+    def cyan
+      colour(36)
+    end
+
     def to_s
       @string
     end

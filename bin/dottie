@@ -18,10 +18,12 @@ test_files.each do |path|
   type = Dottie::Type.for(File.extname(path))
 
   test_case = Dottie::TestCase.new(type, runner, **sections)
-  success = test_case.run
+  result = test_case.run
 
-  if success
+  if result.success?
     puts "#{Dottie::Colour.new("✔").green} #{test_case.test}"
+  elsif result.skipped?
+    puts "#{Dottie::Colour.new("-").cyan} #{test_case.test}"
   else
     puts <<~TEXT
       #{Dottie::Colour.new("✖").red} #{test_case.test}

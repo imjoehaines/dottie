@@ -1,0 +1,8 @@
+--TEST--
+Test simple skipped test (Ruby)
+--FILE--
+puts "oh no";
+--SKIPIF--
+puts "SKIP!";
+--EXPECT--
+this doesn't match the file :O
