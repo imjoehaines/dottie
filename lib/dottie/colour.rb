@@ -1,0 +1,31 @@
+module Dottie
+  class Colour
+    def initialize(string)
+      @string = string
+    end
+
+    def bold
+      colour(1)
+    end
+
+    def red
+      colour(31)
+    end
+
+    def green
+      colour(32)
+    end
+
+    def to_s
+      @string
+    end
+
+    private
+
+    def colour(code)
+      @string = "\e[#{code}m#{@string}\e[0m"
+
+      self
+    end
+  end
+end

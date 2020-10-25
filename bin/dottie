@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require_relative "../lib/dottie"
+require_relative "../lib/dottie/colour"
 require_relative "../lib/dottie/test_case"
 require_relative "../lib/dottie/runner"
 require_relative "../lib/dottie/type"
@@ -43,13 +44,17 @@ test_files.each do |path|
 
   exit_code = 1 unless success
 
-  puts "#{success ? "o" : "X"} #{test_case.test}"
+  if success
+    puts "#{Dottie::Colour.new("✔").green} #{test_case.test}"
+  else
+    puts "#{Dottie::Colour.new("✖").red} #{test_case.test}"
+  end
 
   unless success
     puts <<-TEXT
-  Expected output:
+  #{Dottie::Colour.new("Expected output:").bold}
 #{test_case.expect}
-  Actual output:
+  #{Dottie::Colour.new("Actual output:").bold}
 #{test_case.result}
 TEXT
   end
