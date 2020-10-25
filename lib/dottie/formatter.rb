@@ -1,3 +1,5 @@
+require_relative "colour"
+
 module Dottie
   class Formatter
     def test_result(test_case, result)
