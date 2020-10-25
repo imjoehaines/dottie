@@ -14,11 +14,11 @@ module Dottie::Type
     private
 
     def php_type
-      @@php_type ||= Dottie::Type::Php.new
+      @php_type ||= Dottie::Type::Php.new
     end
 
     def ruby_type
-      @@ruby_type ||= Dottie::Type::Ruby.new
+      @ruby_type ||= Dottie::Type::Ruby.new
     end
   end
 end
