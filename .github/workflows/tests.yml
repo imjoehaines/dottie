@@ -22,7 +22,7 @@ jobs:
       - name: install Ruby
         uses: actions/setup-ruby@v1
         with:
-          ruby-version: 2.7
+          ruby-version: ${{ matrix.ruby-version }}
 
       - run: gem install bundler
 
