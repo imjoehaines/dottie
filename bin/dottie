@@ -2,6 +2,8 @@
 
 require_relative "../lib/dottie"
 require_relative "../lib/dottie/test_case"
+require_relative "../lib/dottie/type/php"
+require_relative "../lib/dottie/type/ruby"
 
 puts "Dottie #{Dottie::VERSION} :)\n"
 
@@ -13,8 +15,8 @@ test_files.each do |path|
   extension = File.extname(path)
 
   type = case extension
-    when ".phpt" then :php
-    when ".rubyt" then :ruby
+    when ".phpt" then Dottie::Type::Php.new
+    when ".rubyt" then Dottie::Type::Ruby.new
     else raise "Unknown file type for '#{extension}'!"
   end
 
@@ -40,7 +42,7 @@ test_files.each do |path|
     end
   end
 
-  test_case = Dottie::TestCase.new(type.to_s, **sections)
+  test_case = Dottie::TestCase.new(type, **sections)
   success = test_case.run
 
   exit_code = 1 unless success

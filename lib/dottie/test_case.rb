@@ -7,15 +7,15 @@ module Dottie
     attr_reader :expect
     attr_reader :result
 
-    def initialize(command, test:, file:, expect:)
-      @command = command
+    def initialize(test_type, test:, file:, expect:)
+      @test_type = test_type
       @test = test
       @file = file
       @expect = expect
     end
 
     def run
-      Open3.popen2e(@command) do |stdin, stdout, thread|
+      Open3.popen2e(@test_type.command) do |stdin, stdout, thread|
         stdin.puts(@file)
         stdin.close
 
