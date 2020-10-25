@@ -6,7 +6,7 @@ require_relative "../lib/dottie/test_case"
 require_relative "../lib/dottie/runner"
 require_relative "../lib/dottie/type"
 
-puts "Dottie #{Dottie::VERSION} :)\n"
+puts "✨ Dottie #{Dottie::VERSION} :)\n\n"
 
 exit_code = 0
 test_files = Dir["tests/*.*t"]
