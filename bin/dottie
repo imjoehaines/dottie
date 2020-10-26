@@ -15,7 +15,7 @@ formatter = Dottie::Formatter.new
 results = []
 exit_code = 0
 directory = ARGV.fetch(0, "tests")
-test_files = Dir["#{directory}/*.*t"]
+test_files = Dir["#{directory}/**/*.*t"]
 
 if test_files.empty?
   puts formatter.no_tests_found("#{__dir__}/#{directory}")
