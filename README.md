@@ -71,7 +71,7 @@ Hello, World!
 
 ### The EXPECT section
 
-**This section is required**
+**Either an EXPECT or EXPECTF section is required**
 
 The `--EXPECT--` section contains the exact text that should have been printed to stdout/stderr by the `--FILE--` section
 
@@ -88,12 +88,48 @@ Hello, World!
 
 This **must exactly match** the combined output of stdout & stderr. If you need to test something that cannot be exactly matched (such as the current time), use `EXPECTF` or `EXPECTREGEX` instead
 
+### The EXPECTF section
+
+**Either an EXPECT or EXPECTF section is required**
+
+The `--EXPECTF--` section contains text that should have been printed to stdout/stderr by the `--FILE--` section, with support for pattern matching, rather than being an exact match
+
+For example, the following RubyT test expects to see `Hello, `, followed by any number of characters printed to stdout:
+
+```rubyt
+--TEST--
+Test EXPECTF
+--FILE--
+puts "Hello, #{rand > 0.5 ? 'bob' : 'sally'}"
+--EXPECT--
+Hello, %s
+```
+
+This is useful when matching against things that may change between test runs, such as the current time or file paths
+
+#### Supported PHPT format specifiers:
+
+- %d: an unsigned integer
+- %i: a signed integer
+- %f: a float
+- %c: a single character
+- %s: one or more of anything until a newline
+- %S: zero or more of anything until a newline
+- %a: one or more of anything including newlines
+- %A: zero or more of anything including newlines
+- %w: zero or more whitespace characters
+- %x: one or more hexadecimal character (a-f, A-F, 0-9)
+
+#### Unsupported PHPT format specifiers:
+
+- %r...%r: a regular expression
+
 ## Currently implemented test sections
 
 - [x] TEST
 - [x] FILE
 - [x] EXPECT
-- [ ] EXPECTF (EXPECT_FORMAT?)
+- [x] EXPECTF (EXPECT_FORMAT?)
 - [ ] EXPECTREGEX (EXPECT_REGEX?)
 - [x] SKIPIF (SKIP_IF?)
 - [x] ENV
