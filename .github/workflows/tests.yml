@@ -8,6 +8,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        ruby-version: [2.7]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby-version }}
+
+      - run: gem install bundler
+
+      - run: ./bin/dottie tests/dottie/
+
+  meta-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
         php-version: [7.4]
         ruby-version: [2.7]
 
