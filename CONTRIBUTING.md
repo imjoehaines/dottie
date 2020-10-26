@@ -6,8 +6,8 @@ Run the Dottie tests:
 $ ./bin/dottie tests/dottie/
 ```
 
-Run the meta tests:
+Run the example tests:
 
 ```sh
-$ ./bin/dottie tests/meta/
+$ ./bin/dottie tests/example/
 ```

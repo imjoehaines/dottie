@@ -22,7 +22,7 @@ jobs:
 
       - run: ./bin/dottie tests/dottie/
 
-  meta-tests:
+  example-tests:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -46,4 +46,4 @@ jobs:
 
       - run: gem install bundler
 
-      - run: ./bin/dottie tests/meta/
+      - run: ./bin/dottie tests/example/
