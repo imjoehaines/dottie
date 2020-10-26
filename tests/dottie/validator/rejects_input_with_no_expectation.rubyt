@@ -1,0 +1,20 @@
+--TEST--
+Dottie::Validator rejects input with no expectation section
+--FILE--
+require "./lib/dottie/validator"
+
+validator = Dottie::Validator.new
+result = validator.validate({
+  test: "a cool & good test",
+  file: "puts 'sick code'",
+  skipif: "nah",
+  env: {
+    "ABC" => "XYZ",
+    "DEF" => "UVW"
+  }
+})
+
+puts result
+--EXPECTF--
+%s:%d:in `validate': Test files must have either an 'EXPECT' or 'EXPECTF' section (RuntimeError)
+%s

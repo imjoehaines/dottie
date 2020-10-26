@@ -1,0 +1,20 @@
+--TEST--
+Dottie::Validator passes with expectf
+--FILE--
+require "./lib/dottie/validator"
+
+validator = Dottie::Validator.new
+result = validator.validate({
+  test: "a cool & good test",
+  file: "puts 'sick code'",
+  expectf: "some %s output",
+  skipif: "nah",
+  env: {
+    "ABC" => "XYZ",
+    "DEF" => "UVW"
+  }
+})
+
+puts result
+--EXPECT--
+true
