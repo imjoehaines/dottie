@@ -3,7 +3,7 @@ name: Tests
 on: [push]
 
 jobs:
-  dot-t-tests:
+  meta-tests:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -20,7 +20,7 @@ jobs:
 
       - run: gem install bundler
 
-      - run: ./bin/dottie tests/dottie/
+      - run: ./bin/dottie tests/meta/
 
   example-tests:
     runs-on: ubuntu-latest

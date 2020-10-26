@@ -1,9 +1,9 @@
 # Contributing
 
-Run the Dottie tests:
+Run the meta tests:
 
 ```sh
-$ ./bin/dottie tests/dottie/
+$ ./bin/dottie tests/meta/
 ```
 
 Run the example tests:
