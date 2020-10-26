@@ -9,7 +9,6 @@ require_relative "../lib/dottie/type"
 
 puts "✨ Dottie #{Dottie::VERSION} :)\n\n"
 
-runner = Dottie::Runner.new
 formatter = Dottie::Formatter.new
 
 results = []
@@ -26,8 +25,9 @@ end
 test_files.each do |path|
   sections = File.open(path) { |file| Dottie::Parser.parse(file) }
   type = Dottie::Type.for(File.extname(path))
+  runner = Dottie::Runner.for(type)
 
-  test_case = Dottie::TestCase.new(type, **sections)
+  test_case = Dottie::TestCase.new(**sections)
   result = test_case.run(runner)
 
   puts formatter.test_result(test_case, result)

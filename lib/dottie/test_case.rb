@@ -6,7 +6,6 @@ module Dottie
     attr_reader :result
 
     def initialize(
-      test_type,
       test:,
       file:,
       expect: nil,
@@ -16,7 +15,6 @@ module Dottie
     )
       raise "Invalid test case; no expect/expectf given!" unless expect || expectf
 
-      @test_type = test_type
       @test = test
       @file = file
       @expect = expect
@@ -28,7 +26,7 @@ module Dottie
     def run(runner)
       return Result.new(skipped: true) if should_skip?(runner)
 
-      @result = runner.run(@test_type.command, @file, @env)
+      @result = runner.run(@file, @env)
 
       Result.new(success: success?)
     end
@@ -54,7 +52,7 @@ module Dottie
     def should_skip?(runner)
       return false if @skipif.nil?
 
-      output = runner.run(@test_type.command, @skipif)
+      output = runner.run(@skipif)
 
       output.downcase.start_with?("skip")
     end
