@@ -1,5 +1,9 @@
-module Dottie::Parser
-  class << self
+module Dottie
+  class Parser
+    def initialize(validator)
+      @validator = validator
+    end
+
     def parse(file)
       sections = {}
       section = nil
@@ -23,6 +27,8 @@ module Dottie::Parser
       end
 
       sections[:env] = parse_env(sections[:env]) if sections.has_key?(:env)
+
+      @validator.validate(sections)
 
       sections
     end
