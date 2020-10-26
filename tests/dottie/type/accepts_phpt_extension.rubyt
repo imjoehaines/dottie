@@ -1,0 +1,9 @@
+--TEST--
+Dottie::Type accepts .phpt extension
+--FILE--
+require "./lib/dottie"
+require "./lib/dottie/type"
+
+puts Dottie::Type.for(".phpt")
+--EXPECTF--
+#<Dottie::Type::Php:%s>
