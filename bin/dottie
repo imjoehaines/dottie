@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
-require_relative "../lib/dottie/cli"
+require_relative "../lib/dottie/cli/option_parser"
+require_relative "../lib/dottie/cli/runner"
 
-Dottie::Cli.run
+runner = Dottie::Cli::Runner.new(Dottie::Cli::OptionParser.new)
+runner.run(ARGV)
