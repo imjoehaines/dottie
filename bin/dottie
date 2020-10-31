@@ -10,7 +10,7 @@ require_relative "../lib/dottie/validator"
 
 puts "✨ Dottie #{Dottie::VERSION} :)\n\n"
 
-formatter = Dottie::Formatter.new
+formatter = Dottie::Formatter.for(:pretty)
 parser = Dottie::Parser.new(Dottie::Validator.new)
 
 results = []

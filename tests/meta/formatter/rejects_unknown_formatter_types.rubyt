@@ -1,0 +1,15 @@
+--TEST--
+Dottie::Formatter rejects unknown formatter types
+--FILE--
+require "./lib/dottie"
+require "./lib/dottie/formatter"
+
+[:json, :xml, :some_other_formatter].each do |type|
+  puts Dottie::Formatter.for(type)
+rescue => e
+  puts e
+end
+--EXPECTF--
+Unknown formatter type 'json'!
+Unknown formatter type 'xml'!
+Unknown formatter type 'some_other_formatter'!

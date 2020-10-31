@@ -1,0 +1,9 @@
+--TEST--
+Dottie::Formatter can create the pretty formatter
+--FILE--
+require "./lib/dottie"
+require "./lib/dottie/formatter"
+
+puts Dottie::Formatter.for(:pretty)
+--EXPECTF--
+#<Dottie::Formatter::Pretty:%s>
