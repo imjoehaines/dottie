@@ -1,6 +1,7 @@
 require "optparse"
 require_relative "../dottie"
 require_relative "./colour"
+require_relative "./configuration"
 require_relative "./formatter"
 require_relative "./parser"
 require_relative "./runner"
@@ -11,7 +12,7 @@ require_relative "./validator"
 module Dottie::Cli
   class << self
     def run
-      options = {}
+      options = Dottie::Configuration.new
 
       option_parser = OptionParser.new do |opts|
         opts.banner = "Usage: #{$PROGRAM_NAME} [directory] [<options>]"
@@ -27,7 +28,7 @@ module Dottie::Cli
           Dottie::Formatter,
           "Choose a formatter for output (default: pretty)"
         ) do |formatter|
-          options[:formatter] = formatter
+          options.formatter = formatter
         end
 
         opts.on("-h", "--help", "Show this help") do
@@ -54,7 +55,6 @@ module Dottie::Cli
 
       puts Dottie.banner, "\n"
 
-      formatter = options[:formatter] || Dottie::Formatter.for(:pretty)
       parser = Dottie::Parser.new(Dottie::Validator.new)
 
       results = []
@@ -63,7 +63,7 @@ module Dottie::Cli
       test_files = Dir["#{directory}/**/*.*t"]
 
       if test_files.empty?
-        print formatter.no_tests_found("#{__dir__}/#{directory}")
+        print options.formatter.no_tests_found("#{__dir__}/#{directory}")
 
         exit 1
       end
@@ -76,14 +76,14 @@ module Dottie::Cli
         test_case = Dottie::TestCase.new(**sections)
         result = test_case.run(runner)
 
-        print formatter.test_result(test_case, result)
+        print options.formatter.test_result(test_case, result)
 
         exit_code = 1 if result.failed?
 
         results << result
       end
 
-      print formatter.suite_result(results)
+      print options.formatter.suite_result(results)
 
       exit exit_code
     end
