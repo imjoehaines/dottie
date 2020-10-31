@@ -1,8 +1,8 @@
 --TEST--
 Dottie::Type rejects unknown extensions
 --FILE--
-require "./lib/dottie"
-require "./lib/dottie/type"
+require "../../../lib/dottie"
+require "../../../lib/dottie/type"
 
 [".php", ".rb", ".abct", "phpt", "rubyt"].each do |extension|
   Dottie::Type.for(extension)

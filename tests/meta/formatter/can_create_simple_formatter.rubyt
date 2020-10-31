@@ -1,8 +1,8 @@
 --TEST--
 Dottie::Formatter can create the simple formatter
 --FILE--
-require "./lib/dottie"
-require "./lib/dottie/formatter"
+require "../../../lib/dottie"
+require "../../../lib/dottie/formatter"
 
 puts Dottie::Formatter.for(:simple)
 --EXPECTF--

@@ -1,8 +1,8 @@
 --TEST--
 Dottie::Formatter rejects unknown formatter types
 --FILE--
-require "./lib/dottie"
-require "./lib/dottie/formatter"
+require "../../../lib/dottie"
+require "../../../lib/dottie/formatter"
 
 [:json, :xml, :some_other_formatter].each do |type|
   puts Dottie::Formatter.for(type)

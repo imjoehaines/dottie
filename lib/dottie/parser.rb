@@ -26,6 +26,7 @@ module Dottie
         sections[section] += line
       end
 
+      sections[:directory] = File.dirname(file)
       sections[:env] = parse_env(sections[:env]) if sections.has_key?(:env)
 
       @validator.validate(sections)

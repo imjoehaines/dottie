@@ -14,10 +14,10 @@ module Dottie
       @command = command
     end
 
-    def run(input, env = {})
+    def run(input, directory, env = {})
       result = nil
 
-      Open3.popen2e(env, @command) do |stdin, stdout, thread|
+      Open3.popen2e(env, @command, { chdir: directory }) do |stdin, stdout, thread|
         stdin.puts(input)
         stdin.close
 

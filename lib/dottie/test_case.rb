@@ -6,6 +6,7 @@ module Dottie
     attr_reader :result
 
     def initialize(
+      directory:,
       test:,
       file:,
       expect: nil,
@@ -15,6 +16,7 @@ module Dottie
     )
       raise "Invalid test case; no expect/expectf given!" unless expect || expectf
 
+      @directory = directory
       @test = test
       @file = file
       @expect = expect
@@ -26,7 +28,7 @@ module Dottie
     def run(runner)
       return Result.new(test_case: self, skipped: true) if should_skip?(runner)
 
-      @result = runner.run(@file, @env)
+      @result = runner.run(@file, @directory, @env)
 
       Result.new(test_case: self, success: success?)
     end
@@ -52,7 +54,7 @@ module Dottie
     def should_skip?(runner)
       return false if @skipif.nil?
 
-      output = runner.run(@skipif)
+      output = runner.run(@skipif, @directory)
 
       output.downcase.start_with?("skip")
     end

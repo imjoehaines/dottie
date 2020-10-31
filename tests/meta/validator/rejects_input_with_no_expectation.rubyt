@@ -1,7 +1,7 @@
 --TEST--
 Dottie::Validator rejects input with no expectation section
 --FILE--
-require "./lib/dottie/validator"
+require "../../../lib/dottie/validator"
 
 validator = Dottie::Validator.new
 result = validator.validate({
