@@ -4,4 +4,4 @@ require_relative "../lib/dottie/cli/option_parser"
 require_relative "../lib/dottie/cli/runner"
 
 runner = Dottie::Cli::Runner.new(Dottie::Cli::OptionParser.new)
-runner.run(ARGV)
+exit runner.run(ARGV)

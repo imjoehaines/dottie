@@ -18,9 +18,9 @@ module Dottie::Cli
       rescue => error
         puts Dottie.banner(error: true), "\n"
         puts "#{Dottie::Colour.new("Error").red.bold} #{error}", "\n"
-
         puts @option_parser.help
-        exit 1
+
+        return 1
       end
 
       puts Dottie.banner, "\n"
@@ -35,7 +35,7 @@ module Dottie::Cli
       if test_files.empty?
         print options.formatter.no_tests_found("#{__dir__}/#{directory}")
 
-        exit 1
+        return 1
       end
 
       test_files.each do |path|
@@ -55,7 +55,7 @@ module Dottie::Cli
 
       print options.formatter.suite_result(results)
 
-      exit exit_code
+      exit_code
     end
   end
 end

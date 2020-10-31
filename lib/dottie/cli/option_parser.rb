@@ -1,4 +1,5 @@
 require "optparse"
+require_relative "../../dottie"
 require_relative "../configuration"
 require_relative "../formatter"
 
