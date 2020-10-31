@@ -4,31 +4,43 @@ module Dottie::Formatter
   class Simple
     def test_result(test_case, result)
       if result.success?
-        colour("✔").green
+        colour("✔").green.to_s
       elsif result.skipped?
-        colour("-").cyan
+        colour("-").cyan.to_s
       else
-        colour("✖").red
+        colour("✖").red.to_s
       end
     end
 
     def suite_result(results)
       total = results.count
       skips = results.count(&:skipped?)
-      failures = results.count(&:failed?)
+      failures = results.filter(&:failed?)
       plural = ->(count) { count == 1 ? "test" : "tests" }
 
-      output = "\n\n#{colour("Ran #{total} #{plural.(total)}!").bold}\n"
+      output = "\n#{colour("Failures:").bold}\n\n"
+
+      failures.each do |failure|
+        output << <<~TEXT
+          #{colour("✖").red} #{failure.test_case.test}
+          #{colour("Expected output:").bold}
+          #{failure.test_case.expected}
+          #{colour("Actual output:").bold}
+          #{failure.test_case.result}
+        TEXT
+      end
+
+      output << colour("Ran #{total} #{plural.(total)}!\n").bold.to_s
 
       if skips > 0
         output << colour("#{skips} skipped #{plural.(skips)}").cyan.to_s << "\n"
       end
 
-      if failures > 0
-        output << colour("#{failures} failed #{plural.(failures)}").red.to_s << "\n"
+      if failures.count > 0
+        output << colour("#{failures.count} failed #{plural.(failures)}").red.to_s << "\n"
       end
 
-      output << "\n" << success_or_fail(success: failures == 0)
+      output << "\n" << success_or_fail(success: failures.count == 0)
 
       output
     end
