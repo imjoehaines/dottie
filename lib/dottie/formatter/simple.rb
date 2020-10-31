@@ -18,16 +18,20 @@ module Dottie::Formatter
       failures = results.filter(&:failed?)
       plural = ->(count) { count == 1 ? "test" : "tests" }
 
-      output = "\n#{colour("Failures:").bold}\n\n"
+      output = "\n"
 
-      failures.each do |failure|
-        output << <<~TEXT
-          #{colour("✖").red} #{failure.test_case.test}
-          #{colour("Expected output:").bold}
-          #{failure.test_case.expected}
-          #{colour("Actual output:").bold}
-          #{failure.test_case.result}
-        TEXT
+      if failures.count > 0
+        output << "#{colour("Failures:").bold}\n\n"
+
+        failures.each do |failure|
+          output << <<~TEXT
+            #{colour("✖").red} #{failure.test_case.test}
+            #{colour("Expected output:").bold}
+            #{failure.test_case.expected}
+            #{colour("Actual output:").bold}
+            #{failure.test_case.result}
+          TEXT
+        end
       end
 
       output << colour("Ran #{total} #{plural.(total)}!\n").bold.to_s
