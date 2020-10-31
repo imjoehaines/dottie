@@ -8,22 +8,21 @@ require_relative "../validator"
 
 module Dottie::Cli
   class Runner
-    def initialize(option_parser)
+    def initialize(option_parser, print)
       @option_parser = option_parser
+      @print = print
     end
 
     def run(argv)
       begin
         config = @option_parser.parse(argv)
       rescue => error
-        puts Dottie.banner(error: true), "\n"
-        puts "#{Dottie::Colour.new("Error").red.bold} #{error}", "\n"
-        puts @option_parser.help
+        @print.(Dottie.banner(error: true), "\n\n")
+        @print.("#{Dottie::Colour.new("Error").red.bold} #{error}", "\n\n")
+        @print.(@option_parser.help)
 
         return 1
       end
-
-      puts Dottie.banner, "\n"
 
       parser = Dottie::Parser.new(Dottie::Validator.new)
 
@@ -33,10 +32,13 @@ module Dottie::Cli
       test_files = Dir["#{directory}/**/*.*t"]
 
       if test_files.empty?
-        print config.formatter.no_tests_found("#{__dir__}/#{directory}")
+        @print.(Dottie.banner(error: true), "\n\n")
+        @print.(config.formatter.no_tests_found("#{__dir__}/#{directory}"))
 
         return 1
       end
+
+      @print.(Dottie.banner, "\n\n")
 
       test_files.each do |path|
         sections = File.open(path) { |file| parser.parse(file) }
@@ -46,14 +48,14 @@ module Dottie::Cli
         test_case = Dottie::TestCase.new(**sections)
         result = test_case.run(runner)
 
-        print config.formatter.test_result(test_case, result)
+        @print.(config.formatter.test_result(test_case, result))
 
         exit_code = 1 if result.failed?
 
         results << result
       end
 
-      print config.formatter.suite_result(results)
+      @print.(config.formatter.suite_result(results))
 
       exit_code
     end
