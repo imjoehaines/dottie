@@ -14,7 +14,7 @@ module Dottie::Cli
 
     def run(argv)
       begin
-        options = @option_parser.parse(argv)
+        config = @option_parser.parse(argv)
       rescue => error
         puts Dottie.banner(error: true), "\n"
         puts "#{Dottie::Colour.new("Error").red.bold} #{error}", "\n"
@@ -33,7 +33,7 @@ module Dottie::Cli
       test_files = Dir["#{directory}/**/*.*t"]
 
       if test_files.empty?
-        print options.formatter.no_tests_found("#{__dir__}/#{directory}")
+        print config.formatter.no_tests_found("#{__dir__}/#{directory}")
 
         return 1
       end
@@ -46,14 +46,14 @@ module Dottie::Cli
         test_case = Dottie::TestCase.new(**sections)
         result = test_case.run(runner)
 
-        print options.formatter.test_result(test_case, result)
+        print config.formatter.test_result(test_case, result)
 
         exit_code = 1 if result.failed?
 
         results << result
       end
 
-      print options.formatter.suite_result(results)
+      print config.formatter.suite_result(results)
 
       exit_code
     end

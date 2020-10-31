@@ -20,7 +20,7 @@ module Dottie::Cli
           Dottie::Formatter,
           "Choose a formatter for output (default: pretty)"
         ) do |formatter|
-          @options.formatter = formatter
+          @config.formatter = formatter
         end
 
         opts.on("-h", "--help", "Show this help") do
@@ -37,11 +37,11 @@ module Dottie::Cli
     end
 
     def parse(argv)
-      @options = Dottie::Configuration.new
+      @config = Dottie::Configuration.new
 
       @raw_option_parser.parse!(argv)
 
-      @options
+      @config
     end
 
     def help
