@@ -1,6 +1,8 @@
 #!/usr/bin/env ruby
 
+require "optparse"
 require_relative "../lib/dottie"
+require_relative "../lib/dottie/colour"
 require_relative "../lib/dottie/formatter"
 require_relative "../lib/dottie/parser"
 require_relative "../lib/dottie/runner"
@@ -8,9 +10,41 @@ require_relative "../lib/dottie/test_case"
 require_relative "../lib/dottie/type"
 require_relative "../lib/dottie/validator"
 
-puts "✨ Dottie #{Dottie::VERSION} :)\n\n"
+options = { formatter: :pretty }
 
-formatter = Dottie::Formatter.for(:pretty)
+option_parser = OptionParser.new do |opts|
+  opts.banner = "Usage: #{$PROGRAM_NAME} [directory] [<options>]"
+  opts.separator ""
+
+  opts.on("-fFORMATTER", "--formatter=FORMATTER", "Choose a formatter for output (default: pretty)") do |formatter|
+    options[:formatter] = formatter.to_sym
+  end
+
+  opts.on("-h", "--help", "Show this help") do
+    puts Dottie.banner, "\n"
+    puts opts
+    exit
+  end
+
+  opts.on("-v", "--version", "Output Dottie version number") do
+    puts "Dottie #{Dottie::VERSION}"
+    exit
+  end
+end
+
+begin
+  option_parser.parse!
+rescue OptionParser::InvalidOption => error
+  puts Dottie.banner(error: true), "\n"
+  puts "#{Dottie::Colour.new("Error").red.bold} #{error}", "\n"
+
+  puts option_parser
+  exit 1
+end
+
+puts Dottie.banner, "\n"
+
+formatter = Dottie::Formatter.for(options[:formatter])
 parser = Dottie::Parser.new(Dottie::Validator.new)
 
 results = []
