@@ -15,17 +15,10 @@ module Dottie
     end
 
     def run(input, directory, env = {})
-      result = nil
-
-      Open3.popen2e(env, @command, { chdir: directory }) do |stdin, stdout, thread|
-        stdin.puts(input)
-        stdin.close
-
-        result = stdout.read
-
-        stdout.close
-        thread.join
-      end
+      result, status = Open3.capture2e(env, @command, {
+        chdir: directory,
+        stdin_data: input
+      })
 
       result
     end
