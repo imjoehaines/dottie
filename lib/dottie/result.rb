@@ -1,6 +1,9 @@
 module Dottie
   class Result
-    def initialize(success: false, skipped: false)
+    attr_reader :test_case
+
+    def initialize(test_case:, success: false, skipped: false)
+      @test_case = test_case
       @success = success
       @skipped = skipped
     end

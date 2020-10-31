@@ -24,11 +24,11 @@ module Dottie
     end
 
     def run(runner)
-      return Result.new(skipped: true) if should_skip?(runner)
+      return Result.new(test_case: self, skipped: true) if should_skip?(runner)
 
       @result = runner.run(@file, @env)
 
-      Result.new(success: success?)
+      Result.new(test_case: self, success: success?)
     end
 
     def expected
