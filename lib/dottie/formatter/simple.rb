@@ -1,0 +1,57 @@
+require_relative "../colour"
+
+module Dottie::Formatter
+  class Simple
+    def test_result(test_case, result)
+      if result.success?
+        colour("✔").green
+      elsif result.skipped?
+        colour("-").cyan
+      else
+        colour("✖").red
+      end
+    end
+
+    def suite_result(results)
+      total = results.count
+      skips = results.count(&:skipped?)
+      failures = results.count(&:failed?)
+      plural = ->(count) { count == 1 ? "test" : "tests" }
+
+      output = "\n\n#{colour("Ran #{total} #{plural.(total)}!").bold}\n"
+
+      if skips > 0
+        output << colour("#{skips} skipped #{plural.(skips)}").cyan.to_s << "\n"
+      end
+
+      if failures > 0
+        output << colour("#{failures} failed #{plural.(failures)}").red.to_s << "\n"
+      end
+
+      output << "\n" << success_or_fail(success: failures == 0)
+
+      output
+    end
+
+    def no_tests_found(directory)
+      <<~TEXT
+
+        No tests found in '#{directory}'
+
+        #{success_or_fail(success: false)}
+      TEXT
+    end
+
+    private
+
+    def success_or_fail(success:)
+      if success
+        colour("SUCCESS\n").green.bold.to_s
+      else
+        colour("FAIL\n").red.bold.to_s
+      end
+    end
+
+    def colour(*args); Dottie::Colour.new(*args) end
+  end
+end

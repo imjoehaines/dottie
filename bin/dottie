@@ -19,7 +19,7 @@ directory = ARGV.fetch(0, "tests")
 test_files = Dir["#{directory}/**/*.*t"]
 
 if test_files.empty?
-  puts formatter.no_tests_found("#{__dir__}/#{directory}")
+  print formatter.no_tests_found("#{__dir__}/#{directory}")
 
   exit 1
 end
@@ -32,13 +32,13 @@ test_files.each do |path|
   test_case = Dottie::TestCase.new(**sections)
   result = test_case.run(runner)
 
-  puts formatter.test_result(test_case, result)
+  print formatter.test_result(test_case, result)
 
   exit_code = 1 if result.failed?
 
   results << result
 end
 
-puts formatter.suite_result(results)
+print formatter.suite_result(results)
 
 exit exit_code
