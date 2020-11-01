@@ -44,14 +44,13 @@ module Dottie::Formatter
         output << colour("#{failures.count} failed #{plural.(failures)}").red.to_s << "\n"
       end
 
-      output << "\n" << success_or_fail(success: failures.count == 0)
+      output << "\n" << success_or_fail(success: failures.count == 0) << "\n"
 
       output
     end
 
     def no_tests_found(directory)
       <<~TEXT
-
         No tests found in '#{directory}'
 
         #{success_or_fail(success: false)}
@@ -62,9 +61,9 @@ module Dottie::Formatter
 
     def success_or_fail(success:)
       if success
-        colour("SUCCESS\n").green.bold.to_s
+        colour("SUCCESS").green.bold.to_s
       else
-        colour("FAIL\n").red.bold.to_s
+        colour("FAIL").red.bold.to_s
       end
     end
 
