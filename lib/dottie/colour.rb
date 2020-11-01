@@ -1,5 +1,9 @@
-module Dottie
-  class Colour
+module Dottie::Colour
+  def colour(string)
+    ColourableString.new(string)
+  end
+
+  class ColourableString
     def initialize(string)
       @string = string
     end
@@ -19,4 +23,6 @@ module Dottie
       self
     end
   end
+
+  private_constant :ColourableString
 end

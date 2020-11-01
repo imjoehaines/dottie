@@ -1,4 +1,3 @@
-require_relative "../colour"
 require_relative "simple"
 
 module Dottie::Formatter

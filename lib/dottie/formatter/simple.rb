@@ -3,6 +3,8 @@ require_relative "../colour"
 
 module Dottie::Formatter
   class Simple
+    include Dottie::Colour
+
     def test_result(result)
       if result.success?
         colour("✔").green.to_s
@@ -69,7 +71,5 @@ module Dottie::Formatter
         colour("FAIL").red.bold.to_s
       end
     end
-
-    def colour(*args); Dottie::Colour.new(*args) end
   end
 end

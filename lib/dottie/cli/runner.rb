@@ -10,6 +10,8 @@ require_relative "../validator"
 
 module Dottie::Cli
   class Runner
+    include Dottie::Colour
+
     def initialize(option_parser, print)
       @option_parser = option_parser
       @print = print
@@ -22,7 +24,7 @@ module Dottie::Cli
         config = @option_parser.parse(argv)
       rescue => error
         @print.(Dottie.banner(error: true), "\n\n")
-        @print.("#{Dottie::Colour.new("Error").red.bold} #{error}", "\n\n")
+        @print.("#{colour("Error").red.bold} #{error}", "\n\n")
         @print.(@option_parser.help)
 
         return 1
