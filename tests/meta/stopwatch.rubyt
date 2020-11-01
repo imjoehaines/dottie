@@ -1,0 +1,19 @@
+--TEST--
+Dottie::Stopwatch works as expected
+--FILE--
+require "../../lib/dottie/stopwatch"
+
+stopwatch = Dottie::Stopwatch.start
+first = stopwatch.time_taken
+second = stopwatch.time_taken
+third = stopwatch.time_taken
+
+puts first, second, third
+puts "first < second? #{first < second}"
+puts "second < third? #{second < third}"
+--EXPECTF--
+%d
+%d
+%d
+first < second? true
+second < third? true
