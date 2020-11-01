@@ -3,6 +3,7 @@ require_relative "../colour"
 require_relative "../parser"
 require_relative "../runner"
 require_relative "../test_case"
+require_relative "../thread_pool"
 require_relative "../type"
 require_relative "../validator"
 
@@ -39,21 +40,26 @@ module Dottie::Cli
       results = []
       exit_code = 0
       parser = Dottie::Parser.new(Dottie::Validator.new)
+      pool = Dottie::ThreadPool.new(max_threads: 8)
 
       test_files.each do |path|
-        sections = File.open(path) { |file| parser.parse(file) }
-        type = Dottie::Type.for(File.extname(path))
-        runner = Dottie::Runner.for(type)
+        pool.execute do
+          sections = File.open(path) { |file| parser.parse(file) }
+          type = Dottie::Type.for(File.extname(path))
+          runner = Dottie::Runner.for(type)
 
-        test_case = Dottie::TestCase.new(**sections)
-        result = test_case.run(runner)
+          test_case = Dottie::TestCase.new(**sections)
+          result = test_case.run(runner)
 
-        @print.(config.formatter.test_result(result))
+          @print.(config.formatter.test_result(result))
 
-        exit_code = 1 if result.failed?
+          exit_code = 1 if result.failed?
 
-        results << result
+          results << result
+        end
       end
+
+      pool.finish!
 
       @print.(config.formatter.suite_result(results))
 
