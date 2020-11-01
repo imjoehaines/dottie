@@ -6,7 +6,7 @@ module Dottie
       end
 
       def now
-        Process.clock_gettime(Process::CLOCK_MONOTONIC, :nanosecond)
+        Process.clock_gettime(Process::CLOCK_MONOTONIC_RAW, :nanosecond)
       end
     end
 
