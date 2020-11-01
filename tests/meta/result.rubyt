@@ -1,0 +1,49 @@
+--TEST--
+Dottie::Result works as expected
+--FILE--
+require "../../lib/dottie/result"
+
+def print_result(result)
+  puts <<~TEXT
+    test_case: #{result.test_case}
+    success? #{result.success?}
+    skipped? #{result.skipped?}
+    failed? #{result.failed?}
+  TEXT
+end
+
+puts "Is a failure by default"
+print_result(Dottie::Result.new(test_case: "-"))
+
+puts "\nCan be successful"
+print_result(Dottie::Result.new(test_case: "-", success: true))
+
+puts "\nCan be skipped"
+print_result(Dottie::Result.new(test_case: "-", skipped: true))
+
+puts "\nCan be skipped & successful (this doesn't totally make sense!)"
+print_result(Dottie::Result.new(test_case: "-", success: true, skipped: true))
+--EXPECT--
+Is a failure by default
+test_case: -
+success? false
+skipped? false
+failed? true
+
+Can be successful
+test_case: -
+success? true
+skipped? false
+failed? false
+
+Can be skipped
+test_case: -
+success? false
+skipped? true
+failed? false
+
+Can be skipped & successful (this doesn't totally make sense!)
+test_case: -
+success? true
+skipped? true
+failed? false
