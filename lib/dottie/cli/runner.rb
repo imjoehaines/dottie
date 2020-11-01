@@ -43,7 +43,7 @@ module Dottie::Cli
       results = []
       exit_code = 0
       parser = Dottie::Parser.new(Dottie::Validator.new)
-      pool = Dottie::ThreadPool.new(max_threads: 8)
+      pool = Dottie::ThreadPool.new(max_threads: config.max_threads)
 
       test_files.each do |path|
         pool.execute do

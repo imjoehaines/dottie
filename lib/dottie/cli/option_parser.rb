@@ -23,6 +23,17 @@ module Dottie::Cli
           @config.formatter = formatter
         end
 
+        opts.on(
+          "-jMAX_THREADS",
+          "--max-threads=MAX_THREADS",
+          ::OptionParser::DecimalInteger,
+          "Set the maximum number of threads that can be used to run tests (default: 8)"
+        ) do |max_threads|
+          raise "--max-threads must be a positive integer" if max_threads <= 0
+
+          @config.max_threads = max_threads
+        end
+
         opts.on("-h", "--help", "Show this help") do
           puts Dottie.banner, "\n"
           puts opts

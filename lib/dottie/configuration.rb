@@ -9,5 +9,13 @@ module Dottie
     def formatter
       @formatter ||= Dottie::Formatter.for(:pretty)
     end
+
+    def max_threads=(max_threads)
+      @max_threads = max_threads
+    end
+
+    def max_threads
+      @max_threads ||= 8
+    end
   end
 end
