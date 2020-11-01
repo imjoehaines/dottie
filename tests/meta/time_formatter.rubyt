@@ -1,0 +1,46 @@
+--TEST--
+Dottie::TimeFormatter formats nanoseconds as expected
+--FILE--
+require "../../lib/dottie/time_formatter"
+
+[
+  0,
+  1_000,
+  101_000,
+  1_000_000,
+  1_111_000,
+  99_000_000,
+  999_000_000,
+  999_123_000,
+  1_000_000_000,
+  59_000_000_000,
+  59_099_000_000,
+  59_999_000_000,
+  60_000_000_000,
+  600_000_000_000,
+  754_056_000_000,
+  671_999_000_000,
+  671_999_050_000,
+  671_999_555_000,
+].each do |input|
+  puts "#{input} outputs: #{Dottie::TimeFormatter.format(input)}"
+end
+--EXPECT--
+0 outputs: 0.000ms
+1000 outputs: 0.001ms
+101000 outputs: 0.101ms
+1000000 outputs: 1.000ms
+1111000 outputs: 1.111ms
+99000000 outputs: 99.000ms
+999000000 outputs: 999.000ms
+999123000 outputs: 999.123ms
+1000000000 outputs: 1s 0.000ms
+59000000000 outputs: 59s 0.000ms
+59099000000 outputs: 59s 99.000ms
+59999000000 outputs: 59s 999.000ms
+60000000000 outputs: 1m
+600000000000 outputs: 10m
+754056000000 outputs: 12m 34s
+671999000000 outputs: 11m 11s
+671999050000 outputs: 11m 11s
+671999555000 outputs: 11m 11s
