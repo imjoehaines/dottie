@@ -24,10 +24,6 @@ module Dottie::Cli
         return 1
       end
 
-      parser = Dottie::Parser.new(Dottie::Validator.new)
-
-      results = []
-      exit_code = 0
       directory = argv.fetch(0, "tests")
       test_files = Dir["#{directory}/**/*.*t"]
 
@@ -39,6 +35,10 @@ module Dottie::Cli
       end
 
       @print.(Dottie.banner, "\n\n")
+
+      results = []
+      exit_code = 0
+      parser = Dottie::Parser.new(Dottie::Validator.new)
 
       test_files.each do |path|
         sections = File.open(path) { |file| parser.parse(file) }
