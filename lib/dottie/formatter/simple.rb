@@ -1,3 +1,4 @@
+require_relative "../time_formatter"
 require_relative "../colour"
 
 module Dottie::Formatter
@@ -12,7 +13,7 @@ module Dottie::Formatter
       end
     end
 
-    def suite_result(results)
+    def suite_result(results, time_taken)
       total = results.count
       skips = results.count(&:skipped?)
       failures = results.filter(&:failed?)
@@ -34,7 +35,9 @@ module Dottie::Formatter
         end
       end
 
-      output << colour("Ran #{total} #{plural.(total)}!\n").bold.to_s
+      output << "Ran " << colour("#{total} #{plural.(total)}").bold.to_s
+      output << " in " << colour(Dottie::TimeFormatter.format(time_taken)).bold.to_s
+      output << "\n"
 
       if skips > 0
         output << colour("#{skips} skipped #{plural.(skips)}").cyan.to_s << "\n"

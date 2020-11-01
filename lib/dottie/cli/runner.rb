@@ -2,6 +2,7 @@ require_relative "../../dottie"
 require_relative "../colour"
 require_relative "../parser"
 require_relative "../runner"
+require_relative "../stopwatch"
 require_relative "../test_case"
 require_relative "../thread_pool"
 require_relative "../type"
@@ -15,6 +16,8 @@ module Dottie::Cli
     end
 
     def run(argv)
+      stopwatch = Dottie::Stopwatch.start
+
       begin
         config = @option_parser.parse(argv)
       rescue => error
@@ -60,8 +63,9 @@ module Dottie::Cli
       end
 
       pool.finish!
+      time_taken = stopwatch.time_taken
 
-      @print.(config.formatter.suite_result(results))
+      @print.(config.formatter.suite_result(results, time_taken))
 
       exit_code
     end
