@@ -82,15 +82,15 @@ module Dottie
       regex_string.gsub!(/([^%])?%i/, '\1[-+]?\d+')
       regex_string.gsub!(/([^%])?%f/, '\1\d+.\d+')
       regex_string.gsub!(/([^%])?%c/, '\1.')
-      regex_string.gsub!(/([^%])?%s/, '\1[^\n]+')
-      regex_string.gsub!(/([^%])?%S/, '\1[^\n]*')
-      regex_string.gsub!(/([^%])?%a/, '\1.+')
-      regex_string.gsub!(/([^%])?%A/, '\1.*')
+      regex_string.gsub!(/([^%])?%s/, '\1.+')
+      regex_string.gsub!(/([^%])?%S/, '\1.*')
+      regex_string.gsub!(/([^%])?%a/, '\1(.|\R)+?')
+      regex_string.gsub!(/([^%])?%A/, '\1(.|\R)*?')
       regex_string.gsub!(/([^%])?%w/, '\1\s')
       regex_string.gsub!(/([^%])?%x/, '\1[a-fA-F0-9]+')
       regex_string.gsub!("%%", "%")
 
-      regex = Regexp.new("^" << regex_string << "$", Regexp::MULTILINE)
+      regex = Regexp.new('\A' << regex_string << '\z')
 
       regex.match?(@result)
     end
