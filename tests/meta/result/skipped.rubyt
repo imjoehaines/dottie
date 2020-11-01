@@ -1,0 +1,19 @@
+--TEST--
+Dottie::Result::Skipped works as expected
+--FILE--
+require "../../../lib/dottie"
+require "../../../lib/dottie/result/skipped"
+
+result = Dottie::Result.skipped("-")
+
+puts <<~TEXT
+  test_case: #{result.test_case}
+  success? #{result.success?}
+  skipped? #{result.skipped?}
+  failed? #{result.failed?}
+TEXT
+--EXPECT--
+test_case: -
+success? false
+skipped? true
+failed? false

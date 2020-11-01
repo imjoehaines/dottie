@@ -1,23 +1,19 @@
-module Dottie
-  class Result
-    attr_reader :test_case
+require_relative "result/failure"
+require_relative "result/skipped"
+require_relative "result/success"
 
-    def initialize(test_case:, success: false, skipped: false)
-      @test_case = test_case
-      @success = success
-      @skipped = skipped
+module Dottie::Result
+  class << self
+    def success(test_case)
+      Success.new(test_case)
     end
 
-    def success?
-      @success
+    def failure(test_case)
+      Failure.new(test_case)
     end
 
-    def skipped?
-      @skipped
-    end
-
-    def failed?
-      !success? && !skipped?
+    def skipped(test_case)
+      Skipped.new(test_case)
     end
   end
 end

@@ -26,11 +26,13 @@ module Dottie
     end
 
     def run(runner)
-      return Result.new(test_case: self, skipped: true) if should_skip?(runner)
+      return Result.skipped(self) if should_skip?(runner)
 
       @result = runner.run(@file, @directory, @env)
 
-      Result.new(test_case: self, success: success?)
+      return Result.success(self) if success?
+
+      Result.failure(self)
     end
 
     def expected
