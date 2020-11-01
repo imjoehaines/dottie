@@ -4,7 +4,7 @@ Dottie::ThreadPool can execute a block
 require "../../../lib/dottie"
 require "../../../lib/dottie/thread_pool"
 
-thread_pool = Dottie::ThreadPool.new
+thread_pool = Dottie::ThreadPool.new(max_threads: 4)
 puts thread_pool
 
 lock = Mutex.new

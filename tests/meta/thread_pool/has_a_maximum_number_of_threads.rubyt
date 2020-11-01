@@ -1,0 +1,27 @@
+--TEST--
+Dottie::ThreadPool has a maximum number of threads
+--FILE--
+require "set"
+require "../../../lib/dottie"
+require "../../../lib/dottie/thread_pool"
+
+max_threads = 4
+thread_pool = Dottie::ThreadPool.new(max_threads: max_threads)
+
+lock = Mutex.new
+threads = Set.new
+
+16.times do |n|
+  thread_pool.execute do
+    sleep 0.01
+    threads << Thread.current
+  end
+end
+
+thread_pool.finish!
+
+puts "Expected number of threads: #{max_threads}"
+puts "  Actual number of threads: #{threads.count}"
+--EXPECT--
+Expected number of threads: 4
+  Actual number of threads: 4

@@ -4,12 +4,13 @@ Dottie::ThreadPool executes blocks in separate threads
 require "../../../lib/dottie"
 require "../../../lib/dottie/thread_pool"
 
-thread_pool = Dottie::ThreadPool.new
+thread_pool = Dottie::ThreadPool.new(max_threads: 8)
 
 threads = [Thread.current]
 
 5.times do |n|
   thread_pool.execute do
+    sleep 0.01
     threads << Thread.current
   end
 end
@@ -25,7 +26,7 @@ threads.each_with_index do |thread_a, index_a|
     end
   end
 end
---EXPECTF--
+--EXPECT--
 thread #0 is the same as thread #0
 thread #0 is different to thread #1
 thread #0 is different to thread #2
