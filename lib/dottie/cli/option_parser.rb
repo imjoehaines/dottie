@@ -7,7 +7,7 @@ module Dottie::Cli
   class OptionParser
     def initialize
       @raw_option_parser = ::OptionParser.new do |opts|
-        opts.banner = "Usage: #{$PROGRAM_NAME} [directory] [<options>]"
+        opts.banner = "Usage: #{$PROGRAM_NAME} [file/directory] [<options>]"
         opts.separator ""
 
         opts.accept(Dottie::Formatter) do |formatter|

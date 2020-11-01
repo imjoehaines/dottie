@@ -29,7 +29,12 @@ module Dottie::Cli
       end
 
       directory = argv.fetch(0, "tests")
-      test_files = Dir["#{directory}/**/*.*t"]
+
+      if File.directory?(directory)
+        test_files = Dir["#{directory}/**/*.*t"]
+      else
+        test_files = [directory]
+      end
 
       if test_files.empty?
         @print.(Dottie.banner(error: true), "\n\n")
