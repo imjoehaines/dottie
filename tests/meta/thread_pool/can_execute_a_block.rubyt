@@ -1,0 +1,22 @@
+--TEST--
+Dottie::ThreadPool can execute a block
+--FILE--
+require "../../../lib/dottie"
+require "../../../lib/dottie/thread_pool"
+
+thread_pool = Dottie::ThreadPool.new
+puts thread_pool
+
+lock = Mutex.new
+sum = 0
+
+100.times do
+  thread_pool.execute do
+    lock.synchronize { sum += 1 }
+  end
+end
+
+puts "sum is: #{sum}"
+--EXPECTF--
+#<Dottie::ThreadPool:%s>
+sum is: 100
