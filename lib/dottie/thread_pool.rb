@@ -24,6 +24,7 @@ module Dottie
     def finish!
       @threads.each { @queue << STOP }
       @threads.each(&:join)
+      @queue.close
     end
   end
 end

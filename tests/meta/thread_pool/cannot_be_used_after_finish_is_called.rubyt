@@ -1,0 +1,17 @@
+--TEST--
+Dottie::ThreadPool cannot be used after 'finish!' is called
+--FILE--
+require "set"
+require "../../../lib/dottie"
+require "../../../lib/dottie/thread_pool"
+
+thread_pool = Dottie::ThreadPool.new(max_threads: 8)
+thread_pool.finish!
+
+thread_pool.execute do
+  puts "Hello from a thread!"
+end
+--EXPECTF--
+%s/lib/dottie/thread_pool.rb:%d:in `push': queue closed (ClosedQueueError)
+%wfrom %s/lib/dottie/thread_pool.rb:%d:in `execute'
+%wfrom -:%d:in `<main>'
