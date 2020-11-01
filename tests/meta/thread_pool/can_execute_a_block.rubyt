@@ -16,6 +16,8 @@ sum = 0
   end
 end
 
+thread_pool.finish!
+
 puts "sum is: #{sum}"
 --EXPECTF--
 #<Dottie::ThreadPool:%s>

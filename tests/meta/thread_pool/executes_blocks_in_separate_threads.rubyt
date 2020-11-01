@@ -1,0 +1,64 @@
+--TEST--
+Dottie::ThreadPool executes blocks in separate threads
+--FILE--
+require "../../../lib/dottie"
+require "../../../lib/dottie/thread_pool"
+
+thread_pool = Dottie::ThreadPool.new
+
+threads = [Thread.current]
+
+5.times do |n|
+  thread_pool.execute do
+    threads << Thread.current
+  end
+end
+
+thread_pool.finish!
+
+threads.each_with_index do |thread_a, index_a|
+  threads.each_with_index do |thread_b, index_b|
+    if thread_a == thread_b
+      puts "thread ##{index_a} is the same as thread ##{index_b}"
+    else
+      puts "thread ##{index_a} is different to thread ##{index_b}"
+    end
+  end
+end
+--EXPECTF--
+thread #0 is the same as thread #0
+thread #0 is different to thread #1
+thread #0 is different to thread #2
+thread #0 is different to thread #3
+thread #0 is different to thread #4
+thread #0 is different to thread #5
+thread #1 is different to thread #0
+thread #1 is the same as thread #1
+thread #1 is different to thread #2
+thread #1 is different to thread #3
+thread #1 is different to thread #4
+thread #1 is different to thread #5
+thread #2 is different to thread #0
+thread #2 is different to thread #1
+thread #2 is the same as thread #2
+thread #2 is different to thread #3
+thread #2 is different to thread #4
+thread #2 is different to thread #5
+thread #3 is different to thread #0
+thread #3 is different to thread #1
+thread #3 is different to thread #2
+thread #3 is the same as thread #3
+thread #3 is different to thread #4
+thread #3 is different to thread #5
+thread #4 is different to thread #0
+thread #4 is different to thread #1
+thread #4 is different to thread #2
+thread #4 is different to thread #3
+thread #4 is the same as thread #4
+thread #4 is different to thread #5
+thread #5 is different to thread #0
+thread #5 is different to thread #1
+thread #5 is different to thread #2
+thread #5 is different to thread #3
+thread #5 is different to thread #4
+thread #5 is the same as thread #5
