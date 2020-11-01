@@ -2,7 +2,7 @@ require_relative "../colour"
 
 module Dottie::Formatter
   class Simple
-    def test_result(test_case, result)
+    def test_result(result)
       if result.success?
         colour("✔").green.to_s
       elsif result.skipped?

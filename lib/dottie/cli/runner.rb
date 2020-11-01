@@ -48,7 +48,7 @@ module Dottie::Cli
         test_case = Dottie::TestCase.new(**sections)
         result = test_case.run(runner)
 
-        @print.(config.formatter.test_result(test_case, result))
+        @print.(config.formatter.test_result(result))
 
         exit_code = 1 if result.failed?
 
