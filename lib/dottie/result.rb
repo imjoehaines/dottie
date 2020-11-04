@@ -5,12 +5,16 @@ module Dottie
         self.new(test_case, type: :success)
       end
 
+      def skipped(test_case)
+        self.new(test_case, type: :skipped)
+      end
+
       def failure(test_case)
         self.new(test_case, type: :failure)
       end
 
-      def skipped(test_case)
-        self.new(test_case, type: :skipped)
+      def expected_failure(test_case)
+        self.new(test_case, type: :expected_failure)
       end
 
       private
@@ -28,6 +32,10 @@ module Dottie
 
     def skipped?
       @type == :skipped
+    end
+
+    def expected_failure?
+      @type == :expected_failure
     end
 
     def failure?

@@ -134,7 +134,7 @@ This is useful when matching against things that may change between test runs, s
 - [x] SKIPIF (SKIP_IF?)
 - [x] ENV
 - [ ] ARGS
-- [ ] XFAIL
+- [x] XFAIL
 - [ ] CLEAN
 - [ ] DESCRIPTION
 

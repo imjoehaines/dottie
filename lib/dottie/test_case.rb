@@ -12,6 +12,7 @@ module Dottie
       expect: nil,
       expectf: nil,
       skipif: nil,
+      xfail: nil,
       env: {}
     )
       raise "Invalid test case; no expect/expectf given!" unless expect || expectf
@@ -22,6 +23,7 @@ module Dottie
       @expect = expect
       @expectf = expectf
       @skipif = skipif
+      @xfail = xfail
       @env = env
     end
 
@@ -30,6 +32,8 @@ module Dottie
 
       @result = runner.run(@file, @directory, @env)
 
+      # Always mark expected failures as such, even if they technically passed
+      return Result.expected_failure(self) if @xfail
       return Result.success(self) if success?
 
       Result.failure(self)

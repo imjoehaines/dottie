@@ -9,6 +9,7 @@ def print_result(result)
     test_case: #{result.test_case}
     success? #{result.success?}
     skipped? #{result.skipped?}
+    expected_failure? #{result.expected_failure?}
     failure? #{result.failure?}
   TEXT
 end
@@ -21,21 +22,34 @@ print_result(Dottie::Result.success("-"))
 
 puts "\nCan be skipped"
 print_result(Dottie::Result.skipped("-"))
+
+puts "\nCan be an expected failure"
+print_result(Dottie::Result.expected_failure("-"))
 --EXPECT--
 Can be a failure
 test_case: -
 success? false
 skipped? false
+expected_failure? false
 failure? true
 
 Can be successful
 test_case: -
 success? true
 skipped? false
+expected_failure? false
 failure? false
 
 Can be skipped
 test_case: -
 success? false
 skipped? true
+expected_failure? false
+failure? false
+
+Can be an expected failure
+test_case: -
+success? false
+skipped? false
+expected_failure? true
 failure? false

@@ -6,20 +6,26 @@ module Dottie::Formatter
     include Dottie::Colour
 
     def test_result(result)
-      if result.success?
+      case
+      when result.success?
         colour("✔").green.to_s
-      elsif result.skipped?
+      when result.skipped?
         colour("-").cyan.to_s
-      else
+      when result.expected_failure?
+        colour("!").yellow.bold.to_s
+      when result.failure?
         colour("✖").red.to_s
+      else raise "Invalid result: #{result}"
       end
     end
 
     def suite_result(results, time_taken)
       total = results.count
       skips = results.count(&:skipped?)
+      expected_failures = results.filter(&:expected_failure?)
       failures = results.filter(&:failure?)
-      plural = ->(count) { count == 1 ? "test" : "tests" }
+
+      plural = ->(count, word = "test") { count == 1 ? word : "#{word}s" }
 
       output = "\n"
 
@@ -45,8 +51,12 @@ module Dottie::Formatter
         output << colour("#{skips} skipped #{plural.(skips)}").cyan.to_s << "\n"
       end
 
+      if expected_failures.count > 0
+        output << colour("#{expected_failures.count} #{plural.(expected_failures.count, "expected failure")}").yellow.to_s << "\n"
+      end
+
       if failures.count > 0
-        output << colour("#{failures.count} failed #{plural.(failures)}").red.to_s << "\n"
+        output << colour("#{failures.count} failed #{plural.(failures.count)}").red.to_s << "\n"
       end
 
       output << "\n" << success_or_fail(success: failures.count == 0) << "\n"

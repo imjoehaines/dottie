@@ -11,6 +11,7 @@ module Dottie::Colour
     def bold; colour(1) end
     def red; colour(31) end
     def green; colour(32) end
+    def yellow; colour(33) end
     def cyan; colour(36) end
 
     def to_s; @string end
