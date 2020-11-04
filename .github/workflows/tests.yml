@@ -18,8 +18,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
 
-      - run: gem install bundler
-
       - run: ./bin/dottie tests/meta/
 
   example-tests:
@@ -43,7 +41,5 @@ jobs:
         uses: actions/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby-version }}
-
-      - run: gem install bundler
 
       - run: ./bin/dottie tests/example/
