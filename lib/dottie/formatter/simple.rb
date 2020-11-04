@@ -18,7 +18,7 @@ module Dottie::Formatter
     def suite_result(results, time_taken)
       total = results.count
       skips = results.count(&:skipped?)
-      failures = results.filter(&:failed?)
+      failures = results.filter(&:failure?)
       plural = ->(count) { count == 1 ? "test" : "tests" }
 
       output = "\n"

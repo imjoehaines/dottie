@@ -63,7 +63,7 @@ module Dottie::Cli
 
           @print.(config.formatter.test_result(result))
 
-          exit_code = 1 if result.failed?
+          exit_code = 1 if result.failure?
 
           results << result
         end

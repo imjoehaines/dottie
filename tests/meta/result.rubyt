@@ -9,7 +9,7 @@ def print_result(result)
     test_case: #{result.test_case}
     success? #{result.success?}
     skipped? #{result.skipped?}
-    failed? #{result.failed?}
+    failure? #{result.failure?}
   TEXT
 end
 
@@ -26,16 +26,16 @@ Can be a failure
 test_case: -
 success? false
 skipped? false
-failed? true
+failure? true
 
 Can be successful
 test_case: -
 success? true
 skipped? false
-failed? false
+failure? false
 
 Can be skipped
 test_case: -
 success? false
 skipped? true
-failed? false
+failure? false
