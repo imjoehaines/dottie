@@ -1,0 +1,80 @@
+:root {
+  --background: #fff;
+  --foreground: #333;
+
+  font-family: SF Mono, SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
+  font-size: 22px;
+  line-height: 1.6;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0 auto;
+  padding: 2rem;
+  max-width: 72ch;
+}
+
+pre {
+  margin: 0;
+  padding: 1rem;
+  overflow: auto;
+  background: rgba(0, 0, 0, .05)
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  margin: 2rem 0 0;
+  line-height: 1;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 1.33rem;
+  margin-top: 0;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1.15rem;
+}
+
+h5 {
+  font-size: 1.1rem;
+}
+
+h6 {
+  font-size: 1.05rem;
+}
+
+h1 + h2,
+h2 + h3,
+h3 + h4,
+h4 + h5,
+h5 + h6 {
+  margin-top: 1rem;
+}
+figure {
+    margin: 0;
+}
