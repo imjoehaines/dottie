@@ -33,11 +33,11 @@ module Dottie::Formatter
 
         failures.each do |failure|
           output << <<~TEXT
-            #{colour("✖").red} #{failure.test_case.test}
+            #{colour("✖").red} #{failure.test_name}
             #{colour("Expected output:").bold}
-            #{failure.test_case.expected}
+            #{failure.expected_output}
             #{colour("Actual output:").bold}
-            #{failure.test_case.result}
+            #{failure.actual_output}
           TEXT
         end
       end

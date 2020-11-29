@@ -2,19 +2,19 @@ module Dottie
   class Result
     class << self
       def success(test_case)
-        self.new(test_case, type: :success)
+        self.new(test_case.test, test_case.expected, test_case.result, :success)
       end
 
       def skipped(test_case)
-        self.new(test_case, type: :skipped)
+        self.new(test_case.test, test_case.expected, test_case.result, :skipped)
       end
 
       def failure(test_case)
-        self.new(test_case, type: :failure)
+        self.new(test_case.test, test_case.expected, test_case.result, :failure)
       end
 
       def expected_failure(test_case)
-        self.new(test_case, type: :expected_failure)
+        self.new(test_case.test, test_case.expected, test_case.result, :expected_failure)
       end
 
       private
@@ -24,7 +24,9 @@ module Dottie
       end
     end
 
-    attr_reader :test_case
+    attr_reader :test_name
+    attr_reader :expected_output
+    attr_reader :actual_output
 
     def success?
       @type == :success
@@ -42,8 +44,10 @@ module Dottie
       @type == :failure
     end
 
-    def initialize(test_case, type:)
-      @test_case = test_case
+    def initialize(test_name, expected_output, actual_output, type)
+      @test_name = test_name
+      @expected_output = expected_output
+      @actual_output = actual_output
       @type = type
     end
   end

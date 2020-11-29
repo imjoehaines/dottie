@@ -6,7 +6,9 @@ require "../../lib/dottie/result"
 
 def print_result(result)
   puts <<~TEXT
-    test_case: #{result.test_case}
+    test_name: #{result.test_name}
+    expected_output: #{result.expected_output}
+    actual_output: #{result.actual_output}
     success? #{result.success?}
     skipped? #{result.skipped?}
     expected_failure? #{result.expected_failure?}
@@ -14,41 +16,55 @@ def print_result(result)
   TEXT
 end
 
+class FakeTestCase
+  def test; "-" end
+  def expected; "1234" end
+  def result; "5679" end
+end
+
 puts "Can be a failure"
-print_result(Dottie::Result.failure("-"))
+print_result(Dottie::Result.failure(FakeTestCase.new))
 
 puts "\nCan be successful"
-print_result(Dottie::Result.success("-"))
+print_result(Dottie::Result.success(FakeTestCase.new))
 
 puts "\nCan be skipped"
-print_result(Dottie::Result.skipped("-"))
+print_result(Dottie::Result.skipped(FakeTestCase.new))
 
 puts "\nCan be an expected failure"
-print_result(Dottie::Result.expected_failure("-"))
+print_result(Dottie::Result.expected_failure(FakeTestCase.new))
 --EXPECT--
 Can be a failure
-test_case: -
+test_name: -
+expected_output: 1234
+actual_output: 5679
 success? false
 skipped? false
 expected_failure? false
 failure? true
 
 Can be successful
-test_case: -
+test_name: -
+expected_output: 1234
+actual_output: 5679
 success? true
 skipped? false
 expected_failure? false
 failure? false
 
 Can be skipped
-test_case: -
+test_name: -
+expected_output: 1234
+actual_output: 5679
 success? false
 skipped? true
 expected_failure? false
 failure? false
 
 Can be an expected failure
-test_case: -
+test_name: -
+expected_output: 1234
+actual_output: 5679
 success? false
 skipped? false
 expected_failure? true
