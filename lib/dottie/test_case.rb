@@ -49,12 +49,7 @@ module Dottie
         Result::Failure.new(@test, expected, actual)
       end
     ensure
-      if @clean
-        filename = @clean.chomp
-        path = File.absolute_path(filename, @directory)
-
-        File.delete(path)
-      end
+      runner.run(@clean, @directory) if @clean
     end
 
     private

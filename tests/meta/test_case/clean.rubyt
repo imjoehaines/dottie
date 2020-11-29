@@ -11,7 +11,8 @@ File.new("abc", "w+")
 puts "File 'abc' exists? #{File.exist?('abc')}"
 
 class FakeRunner
-  def run(*args)
+  def run(code, *args)
+    File.delete('abc') if code == "delete file 'abc' please"
   end
 end
 
@@ -20,7 +21,7 @@ test_case = Dottie::TestCase.new(
   test: "",
   file: "",
   expect: "",
-  clean: "abc"
+  clean: "delete file 'abc' please"
 )
 
 puts "Running test case..."
@@ -33,3 +34,5 @@ File 'abc' exists? false
 File 'abc' exists? true
 Running test case...
 File 'abc' exists? false
+--CLEAN--
+File.delete('abc') if File.exist?('abc')
