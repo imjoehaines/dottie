@@ -1,21 +1,13 @@
-require_relative "./formatter"
+require_relative "./formatter/pretty"
 
 module Dottie
   class Configuration
-    def formatter=(formatter)
-      @formatter = formatter
-    end
+    attr_accessor :formatter
+    attr_accessor :max_threads
 
-    def formatter
-      @formatter ||= Dottie::Formatter.for(:pretty)
-    end
-
-    def max_threads=(max_threads)
-      @max_threads = max_threads
-    end
-
-    def max_threads
-      @max_threads ||= 8
+    def initialize
+      @formatter = Dottie::Formatter::Pretty.new
+      @max_threads = 8
     end
   end
 end
