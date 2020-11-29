@@ -2,13 +2,14 @@
 Dottie::Result works as expected
 --FILE--
 require "../../lib/dottie"
-require "../../lib/dottie/result"
+require "../../lib/dottie/result/expected_failure"
+require "../../lib/dottie/result/failure"
+require "../../lib/dottie/result/skipped"
+require "../../lib/dottie/result/success"
 
 def print_result(result)
   puts <<~TEXT
     test_name: #{result.test_name}
-    expected_output: #{result.expected_output}
-    actual_output: #{result.actual_output}
     success? #{result.success?}
     skipped? #{result.skipped?}
     expected_failure? #{result.expected_failure?}
@@ -16,37 +17,32 @@ def print_result(result)
   TEXT
 end
 
-class FakeTestCase
-  def test; "-" end
-  def expected; "1234" end
-  def result; "5679" end
-end
-
 puts "Can be a failure"
-print_result(Dottie::Result.failure(FakeTestCase.new))
+failure = Dottie::Result::Failure.new("-", 1234, 5679)
+print_result(failure)
+puts "expected_output: #{failure.expected_output}"
+puts "actual_output: #{failure.actual_output}"
 
 puts "\nCan be successful"
-print_result(Dottie::Result.success(FakeTestCase.new))
+print_result(Dottie::Result::Success.new("-"))
 
 puts "\nCan be skipped"
-print_result(Dottie::Result.skipped(FakeTestCase.new))
+print_result(Dottie::Result::Skipped.new("-"))
 
 puts "\nCan be an expected failure"
-print_result(Dottie::Result.expected_failure(FakeTestCase.new))
+print_result(Dottie::Result::ExpectedFailure.new("-"))
 --EXPECT--
 Can be a failure
 test_name: -
-expected_output: 1234
-actual_output: 5679
 success? false
 skipped? false
 expected_failure? false
 failure? true
+expected_output: 1234
+actual_output: 5679
 
 Can be successful
 test_name: -
-expected_output: 1234
-actual_output: 5679
 success? true
 skipped? false
 expected_failure? false
@@ -54,8 +50,6 @@ failure? false
 
 Can be skipped
 test_name: -
-expected_output: 1234
-actual_output: 5679
 success? false
 skipped? true
 expected_failure? false
@@ -63,8 +57,6 @@ failure? false
 
 Can be an expected failure
 test_name: -
-expected_output: 1234
-actual_output: 5679
 success? false
 skipped? false
 expected_failure? true

@@ -1,10 +1,10 @@
-require_relative "result"
+require_relative "result/expected_failure"
+require_relative "result/failure"
+require_relative "result/skipped"
+require_relative "result/success"
 
 module Dottie
   class TestCase
-    attr_reader :test
-    attr_reader :result
-
     def initialize(
       directory:,
       test:,
@@ -30,9 +30,9 @@ module Dottie
     end
 
     def run(runner)
-      return Result.skipped(self) if should_skip?(runner)
+      return Result::Skipped.new(@test) if should_skip?(runner)
 
-      @result = runner.run(@file, @directory, @env)
+      actual = runner.run(@file, @directory, @env)
 
       case
       when @xfail
@@ -40,11 +40,11 @@ module Dottie
         # TODO this behaviour isn't ideal; we should fail tests that are expected
         #      to fail but succeed. This may require an 'XFAIL_IF' section,
         #      e.g. so tests can be expected to fail on Windows but pass on Linux
-        Result.expected_failure(self)
-      when success?
-        Result.success(self)
+        Result::ExpectedFailure.new(@test)
+      when success?(actual)
+        Result::Success.new(@test)
       else
-        Result.failure(self)
+        Result::Failure.new(@test, expected, actual)
       end
     ensure
       if @clean
@@ -55,6 +55,8 @@ module Dottie
       end
     end
 
+    private
+
     def expected
       case
       when @expect then @expect
@@ -63,12 +65,10 @@ module Dottie
       end
     end
 
-    private
-
-    def success?
+    def success?(actual)
       case
-      when @expect then @expect == @result
-      when @expectf then expectf_matches?
+      when @expect then @expect == actual
+      when @expectf then expectf_matches?(actual)
       else false
       end
     end
@@ -96,7 +96,7 @@ module Dottie
     #
     # Unsupported PHPT format specifiers:
     #   %r...%r: a regular expression
-    def expectf_matches?
+    def expectf_matches?(actual)
       raise "No expectf given but expectf_matches? called??" unless @expectf
 
       regex_string = Regexp.quote(@expectf.dup)
@@ -114,7 +114,7 @@ module Dottie
 
       regex = Regexp.new('\A' << regex_string << '\z')
 
-      regex.match?(@result)
+      regex.match?(actual)
     end
   end
 end
