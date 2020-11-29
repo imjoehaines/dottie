@@ -1,0 +1,35 @@
+--TEST--
+Dottie::TestCase will delete files referenced in the --CLEAN-- section
+--FILE--
+require "../../../lib/dottie"
+require "../../../lib/dottie/test_case"
+
+puts "File 'abc' exists? #{File.exist?('abc')}"
+
+File.new("abc", "w+")
+
+puts "File 'abc' exists? #{File.exist?('abc')}"
+
+class FakeRunner
+  def run(*args)
+  end
+end
+
+test_case = Dottie::TestCase.new(
+  directory: "",
+  test: "",
+  file: "",
+  expect: "",
+  clean: "abc"
+)
+
+puts "Running test case..."
+
+test_case.run(FakeRunner.new)
+
+puts "File 'abc' exists? #{File.exist?('abc')}"
+--EXPECT--
+File 'abc' exists? false
+File 'abc' exists? true
+Running test case...
+File 'abc' exists? false

@@ -13,6 +13,7 @@ module Dottie
       expectf: nil,
       skipif: nil,
       xfail: nil,
+      clean: nil,
       env: {}
     )
       raise "Invalid test case; no expect/expectf given!" unless expect || expectf
@@ -24,6 +25,7 @@ module Dottie
       @expectf = expectf
       @skipif = skipif
       @xfail = xfail
+      @clean = clean
       @env = env
     end
 
@@ -37,6 +39,13 @@ module Dottie
       return Result.success(self) if success?
 
       Result.failure(self)
+    ensure
+      if @clean
+        filename = @clean.chomp
+        path = File.absolute_path(filename, @directory)
+
+        File.delete(path)
+      end
     end
 
     def expected
