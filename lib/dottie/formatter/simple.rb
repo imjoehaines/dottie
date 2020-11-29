@@ -1,5 +1,6 @@
-require_relative "../time_formatter"
 require_relative "../colour"
+require_relative "../formatter"
+require_relative "../time_formatter"
 
 module Dottie::Formatter
   class Simple
