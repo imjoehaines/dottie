@@ -26,8 +26,6 @@ module Dottie::Formatter
       expected_failures = results.filter(&:expected_failure?)
       failures = results.filter(&:failure?)
 
-      plural = ->(count, word = "test") { count == 1 ? word : "#{word}s" }
-
       output = "\n"
 
       if failures.count > 0
@@ -44,20 +42,20 @@ module Dottie::Formatter
         end
       end
 
-      output << "Ran " << colour("#{total} #{plural.(total)}").bold.to_s
+      output << "Ran " << colour("#{total} #{plural(total)}").bold.to_s
       output << " in " << colour(Dottie::TimeFormatter.format(time_taken)).bold.to_s
       output << "\n"
 
       if skips > 0
-        output << colour("#{skips} skipped #{plural.(skips)}").cyan.to_s << "\n"
+        output << colour("#{skips} skipped #{plural(skips)}").cyan.to_s << "\n"
       end
 
       if expected_failures.count > 0
-        output << colour("#{expected_failures.count} #{plural.(expected_failures.count, "expected failure")}").yellow.to_s << "\n"
+        output << colour("#{expected_failures.count} #{plural(expected_failures.count, "expected failure")}").yellow.to_s << "\n"
       end
 
       if failures.count > 0
-        output << colour("#{failures.count} failed #{plural.(failures.count)}").red.to_s << "\n"
+        output << colour("#{failures.count} failed #{plural(failures.count)}").red.to_s << "\n"
       end
 
       output << "\n" << success_or_fail(success: failures.count == 0) << "\n"
@@ -81,6 +79,12 @@ module Dottie::Formatter
       else
         colour("FAIL").red.bold.to_s
       end
+    end
+
+    def plural(count, word = "test")
+      return word if count == 1
+
+      "#{word}s"
     end
   end
 end
