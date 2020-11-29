@@ -1,0 +1,22 @@
+--TEST--
+Dottie::Validator rejects input with multiple expectation sections
+--FILE--
+require "../../../lib/dottie/validator"
+
+validator = Dottie::Validator.new
+result = validator.validate({
+  test: "a cool & good test",
+  file: "puts 'sick code'",
+  skipif: "nah",
+  expect: "some output",
+  expectf: "some %s",
+  env: {
+    "ABC" => "XYZ",
+    "DEF" => "UVW"
+  }
+})
+
+puts result
+--EXPECTF--
+%s:%d:in `validate': Test files cannot have both 'EXPECT' and 'EXPECTF' sections (RuntimeError)
+%s

@@ -8,6 +8,10 @@ module Dottie
         raise "Test files must have either an 'EXPECT' or 'EXPECTF' section"
       end
 
+      if sections[:expect] && sections[:expectf]
+        raise "Test files cannot have both 'EXPECT' and 'EXPECTF' sections"
+      end
+
       true
     end
   end
