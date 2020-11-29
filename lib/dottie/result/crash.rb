@@ -1,13 +1,11 @@
 module Dottie::Result
-  class Failure
+  class Crash
     attr_reader :test_name
-    attr_reader :expected_output
-    attr_reader :actual_output
+    attr_reader :exception
 
-    def initialize(test_name, expected_output, actual_output)
+    def initialize(test_name, exception)
       @test_name = test_name
-      @expected_output = expected_output
-      @actual_output = actual_output
+      @exception = exception
     end
 
     def success?
@@ -27,7 +25,7 @@ module Dottie::Result
     end
 
     def crash?
-      false
+      true
     end
   end
 end

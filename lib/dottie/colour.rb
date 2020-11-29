@@ -9,6 +9,7 @@ module Dottie::Colour
     end
 
     def bold; colour(1) end
+    def dim; colour(2) end
     def red; colour(31) end
     def green; colour(32) end
     def yellow; colour(33) end

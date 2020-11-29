@@ -5,6 +5,8 @@ require_relative "result/success"
 
 module Dottie
   class TestCase
+    attr_reader :test
+
     def initialize(
       directory:,
       test:,

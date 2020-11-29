@@ -16,7 +16,8 @@ module Dottie::Formatter
         colour("!").yellow.bold.to_s
       when result.failure?
         colour("✖").red.to_s
-      else raise "Invalid result: #{result}"
+      else
+        raise "Invalid result: #{result}"
       end
     end
 
@@ -32,13 +33,23 @@ module Dottie::Formatter
         output << "#{colour("Failures:").bold}\n\n"
 
         failures.each do |failure|
-          output << <<~TEXT
-            #{colour("✖").red} #{failure.test_name}
-            #{colour("Expected output:").bold}
-            #{failure.expected_output}
-            #{colour("Actual output:").bold}
-            #{failure.actual_output}
-          TEXT
+          if failure.crash?
+            output << <<~TEXT
+              #{colour("✖ Crash!").red} #{failure.test_name.chomp}
+
+              #{colour(failure.exception).bold}
+                #{colour(failure.exception.backtrace.join("\n  ")).dim}
+
+            TEXT
+          else
+            output << <<~TEXT
+              #{colour("✖").red} #{failure.test_name}
+              #{colour("Expected output:").bold}
+              #{failure.expected_output}
+              #{colour("Actual output:").bold}
+              #{failure.actual_output}
+            TEXT
+          end
         end
       end
 

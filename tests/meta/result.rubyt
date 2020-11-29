@@ -2,6 +2,7 @@
 Dottie::Result works as expected
 --FILE--
 require "../../lib/dottie"
+require "../../lib/dottie/result/crash"
 require "../../lib/dottie/result/expected_failure"
 require "../../lib/dottie/result/failure"
 require "../../lib/dottie/result/skipped"
@@ -14,6 +15,7 @@ def print_result(result)
     skipped? #{result.skipped?}
     expected_failure? #{result.expected_failure?}
     failure? #{result.failure?}
+    crash? #{result.crash?}
   TEXT
 end
 
@@ -31,6 +33,11 @@ print_result(Dottie::Result::Skipped.new("-"))
 
 puts "\nCan be an expected failure"
 print_result(Dottie::Result::ExpectedFailure.new("-"))
+
+puts "\nCan be a crash"
+crash = Dottie::Result::Crash.new("-", "bad things!")
+print_result(crash)
+puts "exception: #{crash.exception}"
 --EXPECT--
 Can be a failure
 test_name: -
@@ -38,6 +45,7 @@ success? false
 skipped? false
 expected_failure? false
 failure? true
+crash? false
 expected_output: 1234
 actual_output: 5679
 
@@ -47,6 +55,7 @@ success? true
 skipped? false
 expected_failure? false
 failure? false
+crash? false
 
 Can be skipped
 test_name: -
@@ -54,6 +63,7 @@ success? false
 skipped? true
 expected_failure? false
 failure? false
+crash? false
 
 Can be an expected failure
 test_name: -
@@ -61,3 +71,13 @@ success? false
 skipped? false
 expected_failure? true
 failure? false
+crash? false
+
+Can be a crash
+test_name: -
+success? false
+skipped? false
+expected_failure? false
+failure? true
+crash? true
+exception: bad things!

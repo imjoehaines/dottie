@@ -21,5 +21,9 @@ module Dottie::Result
     def failure?
       false
     end
+
+    def crash?
+      false
+    end
   end
 end

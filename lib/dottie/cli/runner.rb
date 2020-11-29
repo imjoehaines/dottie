@@ -1,6 +1,7 @@
 require_relative "../../dottie"
 require_relative "../colour"
 require_relative "../parser"
+require_relative "../result/crash"
 require_relative "../runner"
 require_relative "../stopwatch"
 require_relative "../test_case"
@@ -66,6 +67,10 @@ module Dottie::Cli
           exit_code = 1 if result.failure?
 
           results << result
+        rescue => exception
+          test_name = test_case ? test_case.test : path
+
+          results << Dottie::Result::Crash.new(test_name, exception)
         end
       end
 
