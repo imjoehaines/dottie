@@ -34,11 +34,18 @@ module Dottie
 
       @result = runner.run(@file, @directory, @env)
 
-      # Always mark expected failures as such, even if they technically passed
-      return Result.expected_failure(self) if @xfail
-      return Result.success(self) if success?
-
-      Result.failure(self)
+      case
+      when @xfail
+        # Always mark expected failures as such, even if they technically passed
+        # TODO this behaviour isn't ideal; we should fail tests that are expected
+        #      to fail but succeed. This may require an 'XFAIL_IF' section,
+        #      e.g. so tests can be expected to fail on Windows but pass on Linux
+        Result.expected_failure(self)
+      when success?
+        Result.success(self)
+      else
+        Result.failure(self)
+      end
     ensure
       if @clean
         filename = @clean.chomp
