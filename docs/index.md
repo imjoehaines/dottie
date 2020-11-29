@@ -101,7 +101,7 @@ For example, the following RubyT test expects to see `Hello, `, followed by any 
 Test EXPECTF
 --FILE--
 puts "Hello, #{rand > 0.5 ? 'bob' : 'sally'}"
---EXPECT--
+--EXPECTF--
 Hello, %s
 ```
 
@@ -124,6 +124,73 @@ This is useful when matching against things that may change between test runs, s
 
 - %r...%r: a regular expression
 
+### The SKIPIF section
+
+The `--SKIPIF--` section allows conditionally skipping a test. This is useful if a test only runs in a certain environment
+
+A `--SKIPIF--` section contains some code to run and must output "skip" in order to mark the test as skipped. Other output is allowed (e.g. to give a reason for skipping), but "skip" must be output first
+
+For example, the following PHPT test will be skipped on Windows:
+
+```phpt
+--TEST--
+Test SKIPIF
+--FILE--
+<?php
+echo 'Hello'
+?>
+--EXPECT--
+Hello
+--SKIPIF--
+<?php
+if (PHP_OS_FAMILY === 'Windows') {
+    echo 'SKIP - this test does not run on windows';
+}
+?>
+```
+
+### The XFAIL section
+
+The `--XFAIL--` section marks the test as being expected to fail, so the test will not be counted as a failure
+
+This is useful if a test exists to verify a bug, for example:
+
+```phpt
+--TEST--
+Test XFAIL
+--FILE--
+<?php
+echo 'Hello'
+?>
+--EXPECT--
+Goodbye
+--XFAIL--
+This test doesn't work because "Hello" is output!
+```
+
+### The CLEAN section
+
+The `--CLEAN--` section allows a test to clean up after itself. For example, if a test creates a file it can use `--CLEAN--` to ensure the file is deleted after the test runs
+
+For maximum flexibility, any code can be run in a `--CLEAN--` section so that any resource used in the test can be cleaned (e.g. files, shared memory, a database etc...)
+
+For example, the following RubyT test creates a file that is removed after the test runs:
+
+```rubyt
+--TEST--
+Test CLEAN
+--FILE--
+File.open("abc", "w+") do |file|
+  file.puts("hello from file 'abc'")
+end
+
+puts File.read("abc")
+--EXPECT--
+hello from file 'abc'
+--CLEAN--
+File.delete("abc")
+```
+
 ## Currently implemented test sections
 
 - [x] TEST
@@ -135,7 +202,7 @@ This is useful when matching against things that may change between test runs, s
 - [x] ENV
 - [ ] ARGS
 - [x] XFAIL
-- [ ] CLEAN
+- [x] CLEAN
 - [ ] DESCRIPTION
 
 Additional sections do exist in the PHPT format ([see the PHP QA reference](https://qa.php.net/phpt_details.php)) but are not planned to be supported by Dottie as they are somewhat PHP specific
