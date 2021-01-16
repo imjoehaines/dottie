@@ -13,9 +13,8 @@ module Dottie::Cli
   class Runner
     include Dottie::Colour
 
-    def initialize(option_parser, print)
+    def initialize(option_parser)
       @option_parser = option_parser
-      @print = print
     end
 
     def run(argv)
@@ -24,9 +23,9 @@ module Dottie::Cli
       begin
         config = @option_parser.parse(argv)
       rescue => error
-        @print.(Dottie.banner(error: true), "\n\n")
-        @print.("#{colour("Error").red.bold} #{error}", "\n\n")
-        @print.(@option_parser.help)
+        print(Dottie.banner(error: true), "\n\n")
+        print("#{colour("Error").red.bold} #{error}", "\n\n")
+        print(@option_parser.help)
 
         return 1
       end
@@ -40,13 +39,13 @@ module Dottie::Cli
       end
 
       if test_files.empty?
-        @print.(Dottie.banner(error: true), "\n\n")
-        @print.(config.formatter.no_tests_found("#{__dir__}/#{directory}"))
+        print(Dottie.banner(error: true), "\n\n")
+        print(config.formatter.no_tests_found("#{__dir__}/#{directory}"))
 
         return 1
       end
 
-      @print.(Dottie.banner, "\n\n")
+      print(Dottie.banner, "\n\n")
 
       results = []
       exit_code = 0
@@ -62,7 +61,7 @@ module Dottie::Cli
           test_case = Dottie::TestCase.new(**sections)
           result = test_case.run(runner)
 
-          @print.(config.formatter.test_result(result))
+          print(config.formatter.test_result(result))
 
           exit_code = 1 if result.failure?
 
@@ -77,7 +76,7 @@ module Dottie::Cli
       pool.finish!
       time_taken = stopwatch.time_taken
 
-      @print.(config.formatter.suite_result(results, time_taken))
+      print(config.formatter.suite_result(results, time_taken))
 
       exit_code
     end
