@@ -1,0 +1,11 @@
+--TEST--
+Dottie::Command accepts custom extension mappings
+--FILE--
+require "../../../lib/dottie"
+require "../../../lib/dottie/command"
+
+Dottie::Command.register(".abc", "xyz")
+
+puts Dottie::Command.for(".abc")
+--EXPECTF--
+xyz
