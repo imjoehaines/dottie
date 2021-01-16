@@ -3,8 +3,8 @@ require "open3"
 module Dottie
   class Runner
     class << self
-      def for(type)
-        RUNNERS[type] ||= self.new(type.command)
+      def for(command)
+        RUNNERS[command] ||= self.new(command)
       end
 
       RUNNERS = {}

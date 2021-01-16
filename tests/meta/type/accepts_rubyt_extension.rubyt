@@ -1,9 +1,0 @@
---TEST--
-Dottie::Type accepts .rubyt extension
---FILE--
-require "../../../lib/dottie"
-require "../../../lib/dottie/type"
-
-puts Dottie::Type.for(".rubyt")
---EXPECTF--
-#<Dottie::Type::Ruby:%s>

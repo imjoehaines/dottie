@@ -1,11 +1,11 @@
 --TEST--
-Dottie::Type rejects unknown extensions
+Dottie::Command rejects unknown extensions
 --FILE--
 require "../../../lib/dottie"
-require "../../../lib/dottie/type"
+require "../../../lib/dottie/command"
 
 [".php", ".rb", ".abct", "phpt", "rubyt"].each do |extension|
-  Dottie::Type.for(extension)
+  Dottie::Command.for(extension)
 rescue => e
   puts e
 end

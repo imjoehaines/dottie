@@ -1,0 +1,9 @@
+--TEST--
+Dottie::Command accepts .phpt extension
+--FILE--
+require "../../../lib/dottie"
+require "../../../lib/dottie/command"
+
+puts Dottie::Command.for(".phpt")
+--EXPECTF--
+php

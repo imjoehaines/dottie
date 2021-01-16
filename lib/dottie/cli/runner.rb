@@ -1,12 +1,12 @@
 require_relative "../../dottie"
 require_relative "../colour"
+require_relative "../command"
 require_relative "../parser"
 require_relative "../result/crash"
 require_relative "../runner"
 require_relative "../stopwatch"
 require_relative "../test_case"
 require_relative "../thread_pool"
-require_relative "../type"
 require_relative "../validator"
 
 module Dottie::Cli
@@ -55,8 +55,8 @@ module Dottie::Cli
       test_files.each do |path|
         pool.execute do
           sections = File.open(path) { |file| parser.parse(file) }
-          type = Dottie::Type.for(File.extname(path))
-          runner = Dottie::Runner.for(type)
+          command = Dottie::Command.for(File.extname(path))
+          runner = Dottie::Runner.for(command)
 
           test_case = Dottie::TestCase.new(**sections)
           result = test_case.run(runner)
