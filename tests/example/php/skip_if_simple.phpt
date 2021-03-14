@@ -1,10 +1,10 @@
 --TEST--
-Test simple skipped test (PHP)
+Test simple skipped test (PHP, SKIP_IF)
 --FILE--
 <?php
 echo "oh no";
 ?>
---SKIPIF--
+--SKIP_IF--
 <?php
 echo "SKIP!\n";
 ?>

@@ -129,9 +129,9 @@ This is useful when matching against things that may change between test runs, s
 - [x] TEST
 - [x] FILE
 - [x] EXPECT
-- [x] EXPECTF (EXPECT_FORMAT?)
-- [ ] EXPECTREGEX (EXPECT_REGEX?)
-- [x] SKIPIF (SKIP_IF?)
+- [x] EXPECTF (also available as EXPECT_FORMAT)
+- [ ] EXPECTREGEX (EXPECT_REGEX)
+- [x] SKIPIF (also available as SKIP_IF)
 - [x] ENV
 - [ ] ARGS
 - [x] XFAIL

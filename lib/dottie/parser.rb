@@ -9,7 +9,7 @@ module Dottie
       section = nil
 
       file.each_line do |line|
-        matches = /^--([A-Z]+)--$/.match(line)
+        matches = /^--([A-Z_]+)--$/.match(line)
 
         if matches
           section = matches[1].downcase.to_sym
@@ -29,6 +29,8 @@ module Dottie
       sections[:directory] = File.dirname(file)
       sections[:env] = parse_env(sections[:env]) if sections.has_key?(:env)
 
+      resolve_aliases!(sections)
+
       @validator.validate(sections)
 
       sections
@@ -45,6 +47,23 @@ module Dottie
       end
 
       env
+    end
+
+    ALIASES = {
+      :skip_if => :skipif,
+      :expect_format => :expectf,
+    }.freeze
+
+    private_constant :ALIASES
+
+    def resolve_aliases!(sections)
+      ALIASES.each do |aliased_name, canonical_name|
+        value = sections.delete(aliased_name)
+
+        next if value.nil?
+
+        sections[canonical_name] = value
+      end
     end
   end
 end
