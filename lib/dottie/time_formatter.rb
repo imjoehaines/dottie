@@ -11,9 +11,15 @@ module Dottie
         string << "#{seconds}s " if seconds > 0
 
         if string == "" || minutes == 0
-          microseconds = (nanoseconds / 1_000) % 1_000
+          string << milliseconds.to_s
 
-          string << sprintf("%d.%03dms", milliseconds, microseconds)
+          if seconds == 0
+            microseconds = (nanoseconds / 1_000) % 1_000
+
+            string << sprintf(".%03d", microseconds)
+          end
+
+          string << "ms"
         end
 
         string.rstrip
