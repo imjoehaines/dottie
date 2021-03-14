@@ -1,3 +1,4 @@
+require "etc"
 require_relative "./formatter/pretty"
 
 module Dottie
@@ -7,7 +8,7 @@ module Dottie
 
     def initialize
       @formatter = Dottie::Formatter::Pretty.new
-      @max_threads = 8
+      @max_threads = Etc.nprocessors
     end
   end
 end
