@@ -6,6 +6,8 @@ require_relative "../formatter"
 module Dottie::Cli
   class OptionParser
     def initialize
+      defaults = Dottie::Configuration.new
+
       @raw_option_parser = ::OptionParser.new do |opts|
         opts.banner = "Usage: #{$PROGRAM_NAME} [file/directory] [<options>]"
         opts.separator ""
@@ -14,11 +16,13 @@ module Dottie::Cli
           Dottie::Formatter.for(formatter.to_sym)
         end
 
+        default_formatter = defaults.formatter.class.name.split("::").last.downcase
+
         opts.on(
           "-fFORMATTER",
           "--formatter=FORMATTER",
           Dottie::Formatter,
-          "Choose a formatter for output (default: pretty)"
+          "Choose a formatter for output (default: #{default_formatter})"
         ) do |formatter|
           @config.formatter = formatter
         end
@@ -27,7 +31,7 @@ module Dottie::Cli
           "-jMAX_THREADS",
           "--max-threads=MAX_THREADS",
           ::OptionParser::DecimalInteger,
-          "Set the maximum number of threads that can be used to run tests (default: 8)"
+          "Set the maximum number of threads that can be used to run tests (default: #{defaults.max_threads})"
         ) do |max_threads|
           raise "--max-threads must be a positive integer" if max_threads <= 0
 
