@@ -1,5 +1,5 @@
 --TEST--
-Dottie::Validator rejects input with multiple expectation sections
+Dottie::Validator rejects input with expect and expectf
 --FILE--
 require "../../../lib/dottie/validator"
 

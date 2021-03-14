@@ -130,7 +130,7 @@ This is useful when matching against things that may change between test runs, s
 - [x] FILE
 - [x] EXPECT
 - [x] EXPECTF (also available as EXPECT_FORMAT)
-- [ ] EXPECTREGEX (EXPECT_REGEX)
+- [x] EXPECTREGEX (also available as EXPECT_REGEX)
 - [x] SKIPIF (also available as SKIP_IF)
 - [x] ENV
 - [ ] ARGS

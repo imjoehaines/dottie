@@ -1,5 +1,5 @@
 --TEST--
-Dottie::Validator rejects input with no expectation section
+Dottie::Validator rejects input with expect and expectregex
 --FILE--
 require "../../../lib/dottie/validator"
 
@@ -8,6 +8,8 @@ result = validator.validate({
   test: "a cool & good test",
   file: "puts 'sick code'",
   skipif: "nah",
+  expect: "some output",
+  expectregex: "some [a-z]+",
   env: {
     "ABC" => "XYZ",
     "DEF" => "UVW"
@@ -16,5 +18,5 @@ result = validator.validate({
 
 puts result
 --EXPECTF--
-%s:%d:in `validate': Test files must have an 'EXPECT', 'EXPECTF' or 'EXPECTREGEX' section (RuntimeError)
+%s:%d:in `validate': Test files cannot have both 'EXPECT' and 'EXPECTREGEX' sections (RuntimeError)
 %s

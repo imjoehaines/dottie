@@ -52,6 +52,7 @@ module Dottie
     ALIASES = {
       :skip_if => :skipif,
       :expect_format => :expectf,
+      :expect_regex => :expectregex,
     }.freeze
 
     private_constant :ALIASES

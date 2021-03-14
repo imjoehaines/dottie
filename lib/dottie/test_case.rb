@@ -13,18 +13,22 @@ module Dottie
       file:,
       expect: nil,
       expectf: nil,
+      expectregex: nil,
       skipif: nil,
       xfail: nil,
       clean: nil,
       env: {}
     )
-      raise "Invalid test case; no expect/expectf given!" unless expect || expectf
+      if expect.nil? && expectf.nil? && expectregex.nil?
+        raise "Invalid test case; no expect/expectf/expectregex given!"
+      end
 
       @directory = directory
       @test = test
       @file = file
       @expect = expect
       @expectf = expectf
+      @expectregex = expectregex
       @skipif = skipif
       @xfail = xfail
       @clean = clean
@@ -58,7 +62,8 @@ module Dottie
       case
       when @expect then @expect
       when @expectf then @expectf
-      else raise "Invalid test case; no expect/expectf given!"
+      when @expectregex then @expectregex
+      else raise "Invalid test case; no expected result given!"
       end
     end
 
@@ -66,6 +71,7 @@ module Dottie
       case
       when @expect then @expect == actual
       when @expectf then expectf_matches?(actual)
+      when @expectregex then expectregex_matches?(actual)
       else false
       end
     end
@@ -110,6 +116,12 @@ module Dottie
       regex_string.gsub!("%%", "%")
 
       regex = Regexp.new('\A' << regex_string << '\z')
+
+      regex.match?(actual)
+    end
+
+    def expectregex_matches?(actual)
+      regex = Regexp.new('\A' << @expectregex << '\z')
 
       regex.match?(actual)
     end
