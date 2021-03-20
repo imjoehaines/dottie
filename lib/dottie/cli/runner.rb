@@ -67,6 +67,7 @@ module Dottie::Cli
 
           results << result
         rescue => exception
+          exit_code = 70
           test_name = test_case ? test_case.test : path
 
           results << Dottie::Result::Crash.new(test_name, exception)
