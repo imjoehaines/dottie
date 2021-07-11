@@ -8,6 +8,7 @@ require_relative "../stopwatch"
 require_relative "../test_case"
 require_relative "../thread_pool"
 require_relative "../validator"
+require_relative "./directory_not_found"
 
 module Dottie::Cli
   class Runner
@@ -30,12 +31,13 @@ module Dottie::Cli
         return 1
       end
 
-      directory = argv.fetch(0, "tests")
+      begin
+        test_files = find_test_files(argv)
+      rescue DirectoryNotFound => e
+        print(Dottie.banner(error: true), "\n\n")
+        print(config.formatter.directory_not_found("#{__dir__}/#{e.directory}"))
 
-      if File.directory?(directory)
-        test_files = Dir["#{directory}/**/*.*t"]
-      else
-        test_files = [directory]
+        return 1
       end
 
       if test_files.empty?
@@ -80,6 +82,22 @@ module Dottie::Cli
       print(config.formatter.suite_result(results, time_taken))
 
       exit_code
+    end
+
+    private
+
+    def find_test_files(directories)
+      directories = ["tests"] if directories.empty?
+
+      directories.flat_map do |directory|
+        raise DirectoryNotFound.for(directory) unless File.exist?(directory)
+
+        if File.directory?(directory)
+          Dir["#{directory}/**/*.*t"]
+        else
+          [directory]
+        end
+      end
     end
   end
 end

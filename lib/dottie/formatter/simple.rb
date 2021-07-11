@@ -82,6 +82,14 @@ module Dottie::Formatter
       TEXT
     end
 
+    def directory_not_found(directory)
+      <<~TEXT
+        Directory not found '#{directory}'
+
+        #{success_or_fail(success: false)}
+      TEXT
+    end
+
     private
 
     def success_or_fail(success:)
