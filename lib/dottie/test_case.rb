@@ -39,15 +39,14 @@ module Dottie
       return Result::Skipped.new(@test) if should_skip?(runner)
 
       actual = runner.run(@file, @directory, @env)
+      passed = success?(actual)
 
       case
+      when @xfail && passed
+        Result::Failure.new(@test, @xfail, actual)
       when @xfail
-        # Always mark expected failures as such, even if they technically passed
-        # TODO this behaviour isn't ideal; we should fail tests that are expected
-        #      to fail but succeed. This may require an 'XFAIL_IF' section,
-        #      e.g. so tests can be expected to fail on Windows but pass on Linux
         Result::ExpectedFailure.new(@test)
-      when success?(actual)
+      when passed
         Result::Success.new(@test)
       else
         Result::Failure.new(@test, expected, actual)
