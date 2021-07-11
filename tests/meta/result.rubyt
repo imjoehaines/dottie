@@ -22,8 +22,8 @@ end
 puts "Can be a failure"
 failure = Dottie::Result::Failure.new("-", 1234, 5679)
 print_result(failure)
-puts "expected_output: #{failure.expected_output}"
-puts "actual_output: #{failure.actual_output}"
+puts "expected: #{failure.expected}"
+puts "actual: #{failure.actual}"
 
 puts "\nCan be successful"
 print_result(Dottie::Result::Success.new("-"))
@@ -46,8 +46,8 @@ skipped? false
 expected_failure? false
 failure? true
 crash? false
-expected_output: 1234
-actual_output: 5679
+expected: 1234
+actual: 5679
 
 Can be successful
 test_name: -

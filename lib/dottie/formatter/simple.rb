@@ -44,10 +44,10 @@ module Dottie::Formatter
           else
             output << <<~TEXT
               #{colour("✖").red} #{failure.test_name}
-              #{colour("Expected output:").bold}
-              #{failure.expected_output}
-              #{colour("Actual output:").bold}
-              #{failure.actual_output}
+              #{colour("Expected:").bold}
+              #{failure.expected}
+              #{colour("Actual:").bold}
+              #{failure.actual}
             TEXT
           end
         end
