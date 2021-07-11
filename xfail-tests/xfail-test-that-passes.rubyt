@@ -1,0 +1,8 @@
+--TEST--
+A test with XFAIL that passes should be an error
+--FILE--
+puts "abc"
+--EXPECTF--
+abc
+--XFAIL--
+This test shouldn't work for some reason
