@@ -82,7 +82,7 @@ module Dottie::Cli
           exit_code = 70
           test_name = test_case ? test_case.test : path
 
-          results << Dottie::Result::Crash.new(test_name, exception)
+          results << Dottie::Result::Crash.new(File.dirname(path), test_name, exception)
         end
       end
 

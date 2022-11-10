@@ -11,6 +11,7 @@ require "../../lib/dottie/result/success"
 def print_result(result)
   puts <<~TEXT
     test_name: #{result.test_name}
+    directory: #{result.directory}
     success? #{result.success?}
     skipped? #{result.skipped?}
     expected_failure? #{result.expected_failure?}
@@ -20,27 +21,28 @@ def print_result(result)
 end
 
 puts "Can be a failure"
-failure = Dottie::Result::Failure.new("-", 1234, 5679)
+failure = Dottie::Result::Failure.new("a/b/c", "-", 1234, 5679)
 print_result(failure)
 puts "expected: #{failure.expected}"
 puts "actual: #{failure.actual}"
 
 puts "\nCan be successful"
-print_result(Dottie::Result::Success.new("-"))
+print_result(Dottie::Result::Success.new("a/b/c", "-"))
 
 puts "\nCan be skipped"
-print_result(Dottie::Result::Skipped.new("-"))
+print_result(Dottie::Result::Skipped.new("a/b/c", "-"))
 
 puts "\nCan be an expected failure"
-print_result(Dottie::Result::ExpectedFailure.new("-"))
+print_result(Dottie::Result::ExpectedFailure.new("a/b/c", "-"))
 
 puts "\nCan be a crash"
-crash = Dottie::Result::Crash.new("-", "bad things!")
+crash = Dottie::Result::Crash.new("a/b/c", "-", "bad things!")
 print_result(crash)
 puts "exception: #{crash.exception}"
 --EXPECT--
 Can be a failure
 test_name: -
+directory: a/b/c
 success? false
 skipped? false
 expected_failure? false
@@ -51,6 +53,7 @@ actual: 5679
 
 Can be successful
 test_name: -
+directory: a/b/c
 success? true
 skipped? false
 expected_failure? false
@@ -59,6 +62,7 @@ crash? false
 
 Can be skipped
 test_name: -
+directory: a/b/c
 success? false
 skipped? true
 expected_failure? false
@@ -67,6 +71,7 @@ crash? false
 
 Can be an expected failure
 test_name: -
+directory: a/b/c
 success? false
 skipped? false
 expected_failure? true
@@ -75,6 +80,7 @@ crash? false
 
 Can be a crash
 test_name: -
+directory: a/b/c
 success? false
 skipped? false
 expected_failure? false

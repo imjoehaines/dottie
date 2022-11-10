@@ -1,10 +1,12 @@
 module Dottie::Result
   class Failure
+    attr_reader :directory
     attr_reader :test_name
     attr_reader :expected
     attr_reader :actual
 
-    def initialize(test_name, expected, actual)
+    def initialize(directory, test_name, expected, actual)
+      @directory = directory
       @test_name = test_name
       @expected = expected
       @actual = actual

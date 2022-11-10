@@ -36,20 +36,20 @@ module Dottie
     end
 
     def run(runner)
-      return Result::Skipped.new(@test) if should_skip?(runner)
+      return Result::Skipped.new(@directory, @test) if should_skip?(runner)
 
       actual = runner.run(@file, @directory, @env)
       passed = success?(actual)
 
       case
       when @xfail && passed
-        Result::Failure.new(@test, @xfail, actual)
+        Result::Failure.new(@directory, @test, @xfail, actual)
       when @xfail
-        Result::ExpectedFailure.new(@test)
+        Result::ExpectedFailure.new(@directory, @test)
       when passed
-        Result::Success.new(@test)
+        Result::Success.new(@directory, @test)
       else
-        Result::Failure.new(@test, expected, actual)
+        Result::Failure.new(@directory, @test, expected, actual)
       end
     ensure
       runner.run(@clean, @directory) if @clean
