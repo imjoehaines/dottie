@@ -3,7 +3,7 @@
   --foreground: #333;
 
   font-family: SF Mono, SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.6;
   background-color: var(--background);
   color: var(--foreground);
