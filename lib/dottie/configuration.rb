@@ -7,7 +7,7 @@ module Dottie
     attr_accessor :max_threads
 
     def initialize
-      @formatter = Dottie::Formatter::Pretty.new
+      @formatter = Dottie::Formatter::Pretty.new(self)
       @max_threads = Etc.nprocessors
     end
   end

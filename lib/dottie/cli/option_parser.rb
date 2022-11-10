@@ -13,7 +13,7 @@ module Dottie::Cli
         opts.separator ""
 
         opts.accept(Dottie::Formatter) do |formatter|
-          Dottie::Formatter.for(formatter.to_sym)
+          Dottie::Formatter.for(formatter.to_sym).new(@config)
         end
 
         default_formatter = defaults.formatter.class.name.split("::").last.downcase

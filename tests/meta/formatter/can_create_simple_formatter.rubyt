@@ -6,4 +6,4 @@ require "../../../lib/dottie/formatter"
 
 puts Dottie::Formatter.for(:simple)
 --EXPECTF--
-#<Dottie::Formatter::Simple:%s>
+Dottie::Formatter::Simple

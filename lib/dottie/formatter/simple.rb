@@ -7,7 +7,8 @@ module Dottie::Formatter
   class Simple
     include Dottie::Colour
 
-    def initialize
+    def initialize(config)
+      @config = config
       @diff = Dottie::Diff.new
     end
 
