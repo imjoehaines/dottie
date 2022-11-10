@@ -71,7 +71,7 @@ Hello, World!
 
 ### The EXPECT section
 
-**Either an EXPECT or EXPECTF section is required**
+**Either an EXPECT, EXPECTF or EXPECTREGEX section is required**
 
 The `--EXPECT--` section contains the exact text that should have been printed to stdout/stderr by the `--FILE--` section
 
@@ -90,7 +90,7 @@ This **must exactly match** the combined output of stdout & stderr. If you need 
 
 ### The EXPECTF section
 
-**Either an EXPECT or EXPECTF section is required**
+**Either an EXPECT, EXPECTF or EXPECTREGEX section is required**
 
 The `--EXPECTF--` section contains text that should have been printed to stdout/stderr by the `--FILE--` section, with support for pattern matching, rather than being an exact match
 
@@ -106,6 +106,8 @@ Hello, %s
 ```
 
 This is useful when matching against things that may change between test runs, such as the current time or file paths
+
+`--EXPECTF--` is also available as `--EXPECT_FORMAT--`
 
 #### Supported PHPT format specifiers:
 
@@ -123,6 +125,29 @@ This is useful when matching against things that may change between test runs, s
 #### Unsupported PHPT format specifiers:
 
 - %r...%r: a regular expression
+
+### The EXPECTREGEX section
+
+**Either an EXPECT, EXPECTF or EXPECTREGEX section is required**
+
+The `--EXPECTREGEX--` section contains a regular expression that should match the text printed to stdout/stderr by the `--FILE--` section
+
+For example, the following RubyT test expects to see output matching the regular expression `/^Hello, .*!$/` printed to stdout:
+
+```rubyt
+--TEST--
+Test EXPECTREGEX
+--FILE--
+greeting = ["world", "friend", "there"].sample
+
+puts "Hello, #{greeting}!"
+--EXPECTREGEX--
+^Hello, .*!$
+```
+
+This is useful in similar scenarios to `EXPECTF`, but can be stricter with the allowed output
+
+`--EXPECTREGEX--` is also available as `--EXPECT_REGEX--`
 
 ### The SKIPIF section
 
@@ -148,6 +173,8 @@ if (PHP_OS_FAMILY === 'Windows') {
 }
 ?>
 ```
+
+`--SKIPIF--` is also available as `--SKIP_IF--`
 
 ### The XFAIL section
 
@@ -196,9 +223,9 @@ File.delete("abc")
 - [x] TEST
 - [x] FILE
 - [x] EXPECT
-- [x] EXPECTF (EXPECT_FORMAT?)
-- [ ] EXPECTREGEX (EXPECT_REGEX?)
-- [x] SKIPIF (SKIP_IF?)
+- [x] EXPECTF (also available as EXPECT_FORMAT)
+- [x] EXPECTREGEX (also available as EXPECT_REGEX)
+- [x] SKIPIF (also available as SKIP_IF)
 - [x] ENV
 - [ ] ARGS
 - [x] XFAIL
