@@ -1,0 +1,15 @@
+--TEST--
+Dottie::Command guesses the command for unknown extensions
+--FILE--
+require "../../../lib/dottie"
+require "../../../lib/dottie/command"
+
+[".php", ".rb", ".abct", "phpt", "rubyt"].each do |extension|
+  puts Dottie::Command.for(extension)
+end
+--EXPECT--
+php
+rb
+abc
+php
+ruby
