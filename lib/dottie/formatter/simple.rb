@@ -130,7 +130,7 @@ module Dottie::Formatter
     end
 
     def make_diff(expected, actual)
-      differences = @diff.generate(actual, expected)
+      differences = @diff.generate(expected, actual)
 
       differences.map! do |line|
         case
