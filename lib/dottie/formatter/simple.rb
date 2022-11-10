@@ -1,3 +1,4 @@
+require_relative "../diff"
 require_relative "../colour"
 require_relative "../formatter"
 require_relative "../time_formatter"
@@ -5,6 +6,10 @@ require_relative "../time_formatter"
 module Dottie::Formatter
   class Simple
     include Dottie::Colour
+
+    def initialize
+      @diff = Dottie::Diff.new
+    end
 
     def test_result(result)
       case
@@ -33,23 +38,7 @@ module Dottie::Formatter
         output << "#{colour("Failures:").bold}\n\n"
 
         failures.each do |failure|
-          if failure.crash?
-            output << <<~TEXT
-              #{colour("✖ Crash!").red} #{failure.test_name.chomp}
-
-              #{colour(failure.exception).bold}
-                #{colour(failure.exception.backtrace.join("\n  ")).dim}
-
-            TEXT
-          else
-            output << <<~TEXT
-              #{colour("✖").red} #{failure.test_name}
-              #{colour("Expected:").bold}
-              #{failure.expected}
-              #{colour("Actual:").bold}
-              #{failure.actual}
-            TEXT
-          end
+          output << generate_failure_output(failure)
         end
       end
 
@@ -104,6 +93,56 @@ module Dottie::Formatter
       return word if count == 1
 
       "#{word}s"
+    end
+
+    def generate_failure_output(failure)
+      if failure.crash?
+        return <<~TEXT
+          #{colour("✖ Crash!").red} #{failure.test_name.chomp}
+
+          #{colour(failure.exception).bold}
+            #{colour(failure.exception.backtrace.join("\n  ")).dim}
+
+        TEXT
+      end
+
+      begin
+        <<~TEXT
+          #{colour("✖").red} #{failure.test_name.chomp}
+
+          #{colour("Diff:").bold}
+          #{make_diff(failure.expected, failure.actual)}
+
+        TEXT
+      rescue
+        <<~TEXT
+          #{colour("✖").red} #{failure.test_name.chomp}
+
+          #{colour("Failed to generate diff!").bold}
+
+          #{colour("Expected:").bold}
+          #{failure.expected}
+          #{colour("Actual:").bold}
+          #{failure.actual}
+        TEXT
+      end
+    end
+
+    def make_diff(expected, actual)
+      differences = @diff.generate(actual, expected)
+
+      differences.map! do |line|
+        case
+        when line.start_with?("+")
+          colour(line).green
+        when line.start_with?("-")
+          colour(line).red
+        else
+          line
+        end
+      end
+
+      differences.join("\n")
     end
   end
 end

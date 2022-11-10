@@ -1,0 +1,21 @@
+--TEST--
+Dottie::Diff works as expected
+--FILE--
+require "../../../lib/dottie/diff"
+
+diff = Dottie::Diff.new
+
+puts diff.generate("abc", "abxc").join("\n")
+
+puts("~~~~~~~~~~~~")
+
+puts diff.generate("aaa\nbbb\nccc", "aaa\nbb\nx\nccc").join("\n")
+--EXPECT--
+-abc
++abxc
+~~~~~~~~~~~~
+ aaa
+-bbb
++bb
++x
+ ccc
