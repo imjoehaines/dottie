@@ -32,7 +32,7 @@ module Dottie::Cli
       end
 
       begin
-        test_files = find_test_files(argv)
+        test_files = find_test_files(config)
       rescue DirectoryNotFound => e
         print(Dottie.banner(error: true), "\n\n")
         print(config.formatter.directory_not_found("#{__dir__}/#{e.directory}"))
@@ -41,15 +41,13 @@ module Dottie::Cli
       end
 
       if test_files.empty?
-        directory =
-          case
-          when argv.empty?
-            "tests"
-          when argv.size == 1
-            argv.first
-          else
-            "{#{argv.join(", ")}}"
-          end
+        if config.test_directories.size == 1
+          directory = config.test_directories.first
+        else
+          # use glob(ish) syntax when there are multiple directories
+          # e.g. "__dir__/{a, b, c}"
+          directory = "{#{config.test_directories.join(", ")}}"
+        end
 
         print(Dottie.banner(error: true), "\n\n")
         print(config.formatter.no_tests_found("#{__dir__}/#{directory}"))
@@ -96,10 +94,8 @@ module Dottie::Cli
 
     private
 
-    def find_test_files(directories)
-      directories = ["tests"] if directories.empty?
-
-      directories.flat_map do |directory|
+    def find_test_files(config)
+      config.test_directories.flat_map do |directory|
         raise DirectoryNotFound.for(directory) unless File.exist?(directory)
 
         if File.directory?(directory)

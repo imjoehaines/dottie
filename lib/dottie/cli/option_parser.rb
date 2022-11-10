@@ -56,6 +56,10 @@ module Dottie::Cli
 
       @raw_option_parser.parse!(argv)
 
+      if argv.size > 0
+        @config.test_directories = argv
+      end
+
       @config
     end
 
