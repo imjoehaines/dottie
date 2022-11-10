@@ -41,6 +41,16 @@ module Dottie::Cli
       end
 
       if test_files.empty?
+        directory =
+          case
+          when argv.empty?
+            "tests"
+          when argv.size == 1
+            argv.first
+          else
+            "{#{argv.join(", ")}}"
+          end
+
         print(Dottie.banner(error: true), "\n\n")
         print(config.formatter.no_tests_found("#{__dir__}/#{directory}"))
 
