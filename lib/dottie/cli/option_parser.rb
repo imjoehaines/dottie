@@ -56,8 +56,11 @@ module Dottie::Cli
 
       @raw_option_parser.parse!(argv)
 
+      # if there are any remaining arguments they are directories to look for
+      # tests in
       if argv.size > 0
-        @config.test_directories = argv
+        # remove trailing '/' from directory names
+        @config.test_directories = argv.map { |directory| directory.delete_suffix("/") }
       end
 
       @config
