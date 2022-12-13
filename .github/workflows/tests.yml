@@ -9,7 +9,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.2.0
 
       - name: install Ruby
         uses: ruby/setup-ruby@v1
@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.2.0
 
       - name: install PHP
         uses: shivammathur/setup-php@v2
@@ -41,7 +41,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3.1.0
+      - uses: actions/checkout@v3.2.0
 
       - name: install PHP
         uses: shivammathur/setup-php@v2
