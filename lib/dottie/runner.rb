@@ -26,7 +26,7 @@ module Dottie
 
           stdout_and_stderr.read
         end
-      rescue Timeout::Error
+      rescue
         # try to stop the process with SIGTERM, but kill it if it doesn't exit
         # when asked nicely
         begin
