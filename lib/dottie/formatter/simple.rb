@@ -98,34 +98,41 @@ module Dottie::Formatter
 
     def generate_failure_output(failure)
       if failure.crash?
-        return <<~TEXT
+        <<~TEXT
           #{colour("✖ Crash!").red} #{failure.test_name.chomp}
 
           #{colour(failure.exception).bold}
             #{colour(failure.exception.backtrace.join("\n  ")).dim}
 
         TEXT
-      end
-
-      begin
+      elsif failure.timeout?
         <<~TEXT
           #{colour("✖").red} #{failure.test_name.chomp}
 
-          #{colour("Diff:").bold}
-          #{make_diff(failure.expected, failure.actual)}
+          #{colour("Test timed out after #{@config.timeout} seconds").bold}
 
         TEXT
-      rescue
-        <<~TEXT
-          #{colour("✖").red} #{failure.test_name.chomp}
+      else
+        begin
+          <<~TEXT
+            #{colour("✖").red} #{failure.test_name.chomp}
 
-          #{colour("Failed to generate diff!").bold}
+            #{colour("Diff:").bold}
+            #{make_diff(failure.expected, failure.actual)}
 
-          #{colour("Expected:").bold}
-          #{failure.expected}
-          #{colour("Actual:").bold}
-          #{failure.actual}
-        TEXT
+          TEXT
+        rescue
+          <<~TEXT
+            #{colour("✖").red} #{failure.test_name.chomp}
+
+            #{colour("Failed to generate diff!").bold}
+
+            #{colour("Expected:").bold}
+            #{failure.expected}
+            #{colour("Actual:").bold}
+            #{failure.actual}
+          TEXT
+        end
       end
     end
 

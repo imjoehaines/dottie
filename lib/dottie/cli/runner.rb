@@ -3,6 +3,7 @@ require_relative "../colour"
 require_relative "../command"
 require_relative "../parser"
 require_relative "../result/crash"
+require_relative "../result/timeout"
 require_relative "../runner"
 require_relative "../stopwatch"
 require_relative "../test_case"
@@ -66,10 +67,16 @@ module Dottie::Cli
         pool.execute do
           sections = File.open(path) { |file| parser.parse(file) }
           command = Dottie::Command.for(File.extname(path))
-          runner = Dottie::Runner.for(command)
+          runner = Dottie::Runner.for(command, config.timeout)
 
           test_case = Dottie::TestCase.new(**sections)
-          result = test_case.run(runner)
+
+          result =
+            begin
+              test_case.run(runner)
+            rescue Timeout::Error
+              Dottie::Result::Timeout.new(sections[:directory], sections[:test])
+            end
 
           print(config.formatter.test_result(result))
 

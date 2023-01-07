@@ -38,6 +38,17 @@ module Dottie::Cli
           @config.max_threads = max_threads
         end
 
+        opts.on(
+          "-tTIMEOUT",
+          "--timeout=TIMEOUT",
+          ::OptionParser::DecimalInteger,
+          "Set the maximum time in seconds any single test is allowed to run (default: #{defaults.timeout})"
+        ) do |timeout|
+          raise "--timeout must be a positive integer" if timeout <= 0
+
+          @config.timeout = timeout
+        end
+
         opts.on("-h", "--help", "Show this help") do
           puts Dottie.banner, "\n"
           puts opts

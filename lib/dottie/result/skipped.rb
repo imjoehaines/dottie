@@ -27,5 +27,9 @@ module Dottie::Result
     def crash?
       false
     end
+
+    def timeout?
+      false
+    end
   end
 end

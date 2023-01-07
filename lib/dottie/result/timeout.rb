@@ -1,5 +1,5 @@
 module Dottie::Result
-  class ExpectedFailure
+  class Timeout
     attr_reader :directory
     attr_reader :test_name
 
@@ -17,11 +17,11 @@ module Dottie::Result
     end
 
     def expected_failure?
-      true
+      false
     end
 
     def failure?
-      false
+      true
     end
 
     def crash?
@@ -29,7 +29,7 @@ module Dottie::Result
     end
 
     def timeout?
-      false
+      true
     end
   end
 end
